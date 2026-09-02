@@ -4,21 +4,7 @@ Reusable Crafting Agent UI patterns. Each pattern is a set of custom agents (and
 
 These examples are not tied to a particular product, template, or site. After install, you point the engineering manager at *your* templates and issues, and the eval matrix at *your* org’s LLM catalog.
 
-## One-prompt install
-
-In Crafting Agent UI, start a **new session** with the default agent (do not pick a custom agent). Paste **one** of these blocks as the entire message:
-
-```
-Set up the engineering manager pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
-```
-
-```
-Set up the agent eval pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
-```
-
-That is enough. The default agent checks out this repository, follows [INSTALL.md](INSTALL.md), creates the agents (and template, for eval), and prints what to run next.
-
-You need permission to create org-shared agents (`cs llm agent create --shared`). If you are not an org admin, install still works as personal agents.
+To install, start a **new session** in Crafting Agent UI with the default agent (do not pick a custom agent). Paste that pattern’s install prompt as the entire message. The default agent checks out this repository, follows [INSTALL.md](INSTALL.md), and prints what to run next. You need permission to create org-shared agents (`cs llm agent create --shared`); if you are not an org admin, install still works as personal agents.
 
 ## Engineering manager
 
@@ -45,16 +31,13 @@ sequenceDiagram
   Integ-->>Manager: Pass or fail evidence
 ```
 
+```
+Set up the engineering manager pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
 After install, start a **new** session, select agent `em-manager`, and paste [patterns/engineering-manager/example-prompt.md](patterns/engineering-manager/example-prompt.md) — or your own issue plus a template name from your org. The manager lists templates if you do not name one.
 
 More detail: [patterns/engineering-manager/README.md](patterns/engineering-manager/README.md)
-
-```sh
-cs llm agent remove em-manager --shared
-cs llm agent remove em-coding --shared
-cs llm agent remove em-qa --shared
-cs llm agent remove em-integ --shared
-```
 
 ## Agent eval
 
@@ -82,17 +65,12 @@ flowchart TD
   S1 -->|artifact per trial| EvalMgr
 ```
 
+```
+Set up the agent eval pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
 After install, start a **new** session, select agent `eval-manager`, and paste [patterns/agent-eval/example-prompt.md](patterns/agent-eval/example-prompt.md). Do **not** set a session model override, or every cell can collapse to one model.
 
 A ranking is valid only if **both** slots produced implementation artifacts. Provider 5xx / RPC errors are incomplete trials: `eval-manager` retries, then rebinds the dead slot to another catalog model and re-runs those cells.
 
 More detail: [patterns/agent-eval/README.md](patterns/agent-eval/README.md)
-
-```sh
-cs llm agent remove eval-manager --shared
-cs llm agent remove ev-min-a --shared
-cs llm agent remove ev-min-b --shared
-cs llm agent remove ev-thr-a --shared
-cs llm agent remove ev-thr-b --shared
-cs template remove eval-kata
-```
