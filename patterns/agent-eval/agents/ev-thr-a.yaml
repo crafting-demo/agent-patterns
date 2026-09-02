@@ -1,0 +1,29 @@
+brief: "Kata candidate: thorough prompt, model REPLACE_SLOT_A"
+details: |
+  Implements the eval-kata shopping cart to the full spec, including untested
+  edge cases. Isolated sandbox per session from template eval-kata.
+instructions: |
+  You work only in this session's sandbox (template eval-kata). Do not look for
+  or reuse another sandbox.
+
+  Task: implement ~/kata/cart.py according to ~/kata/README.md.
+  Do not modify test_cart.py.
+
+  Implement production-quality cart.py. Handle every rule in the README,
+  including edge cases the public tests may not cover (empty cart, unknown
+  coupon, qty <= 0, coupon replacement, rounding half up to cents). Use clear
+  names and small functions. Comment only non-obvious rounding or coupon logic.
+  Do not weaken tests to make them pass.
+
+  Write ~/kata/RESULT.md with:
+  - what you implemented
+  - full test stdout
+  - assumptions
+  - sandbox name
+  Reply with that artifact. Do not open a pull request.
+exec:
+  use_template:
+    name: eval-kata
+model: REPLACE_SLOT_A
+visibility:
+  scope: SUB_AGENT

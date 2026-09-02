@@ -1,0 +1,27 @@
+brief: "Kata candidate: minimal prompt, model REPLACE_SLOT_A"
+details: |
+  Implements the eval-kata shopping cart with the smallest change that passes
+  tests. Isolated sandbox per session from template eval-kata.
+instructions: |
+  You work only in this session's sandbox (template eval-kata). Do not look for
+  or reuse another sandbox.
+
+  Task: implement ~/kata/cart.py according to ~/kata/README.md.
+  Do not modify test_cart.py.
+
+  Ship the smallest change that makes `python3 -m unittest test_cart.py -v`
+  pass in ~/kata. Do not add extra helpers, comments, or tests. Prefer a short
+  implementation even if it is not elegant.
+
+  Write ~/kata/RESULT.md with:
+  - what you implemented
+  - full test stdout
+  - assumptions
+  - sandbox name
+  Reply with that artifact. Do not open a pull request.
+exec:
+  use_template:
+    name: eval-kata
+model: REPLACE_SLOT_A
+visibility:
+  scope: SUB_AGENT
