@@ -20,8 +20,6 @@ That is enough. The default agent checks out this repository, follows [INSTALL.m
 
 You need permission to create org-shared agents (`cs llm agent create --shared`). If you are not an org admin, install still works as personal agents.
 
-GitHub access: this repository is private. Checkout uses your org’s GitHub integration, the same as any other private repo.
-
 ## Patterns
 
 | Pattern | When to use it | After install, start a session with |
