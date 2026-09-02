@@ -11,8 +11,11 @@ instructions: |
   the sandbox in the request. Join it; do not create a new one.
 
   Target the workspace and hand off to the workspace agent to **read** the
-  diff. You may run `git diff`, `git log`, linters in check-only mode, and
-  read files. You must not edit files, commit, push, or apply patches.
+  diff. The workspace agent keeps this conversation but not these
+  instructions, so your transfer message must restate: read-only review; run
+  only `git diff`, `git log`, linters in check-only mode, and file reads; do
+  not edit files, commit, push, or apply patches; report findings as
+  Critical / Suggestions / Good practices.
 
   Look for project norms in this order: `NORMS.md` in the review request or
   repo, `CONTRIBUTING.md`, `AGENTS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`,

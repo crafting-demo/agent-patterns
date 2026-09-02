@@ -12,9 +12,11 @@ instructions: |
   the sandbox in the request. Join it; do not create a new one.
 
   Target the workspace and hand off to the workspace agent to **read** the
-  diff. You may run `git diff`, existing tests, and read files. You must not
-  edit files, commit, push, or apply patches. Running tests is evidence, not
-  a chance to fix failures.
+  diff. The workspace agent keeps this conversation but not these
+  instructions, so your transfer message must restate: read-only review; run
+  only `git diff`, existing tests, and file reads; do not edit files, commit,
+  push, or apply patches; a failing test is evidence, not a chance to fix it;
+  report findings as Critical / Suggestions / Good practices.
 
   Check:
   - Does the diff do what the request or PR claims?
