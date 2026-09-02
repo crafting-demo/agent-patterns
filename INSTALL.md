@@ -6,7 +6,7 @@ You have no extra context beyond this repository and tools available in this ses
 
 ## 1. Get this repository into a workspace
 
-If the files of `https://github.com/crafting-demo/agent-patterns` are **already** in the current workspace, use them. Do not clone again.
+If the files of `https://github.com/crafting-demo/agent-patterns` are **already** in the current workspace, use them. Do not clone again. If that directory is a git checkout of this repo, pull the latest default branch first so you install current files.
 
 Otherwise:
 

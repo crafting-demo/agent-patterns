@@ -9,11 +9,11 @@ These examples are not tied to a particular product, template, or site. After in
 In Crafting Agent UI, start a **new session** with the default agent (do not pick a custom agent). Paste **one** of these blocks as the entire message:
 
 ```
-Set up the engineering manager pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed, open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+Set up the engineering manager pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
 ```
 
 ```
-Set up the agent eval pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed, open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+Set up the agent eval pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
 ```
 
 That is enough. The default agent checks out this repository, follows [INSTALL.md](INSTALL.md), creates the agents (and template, for eval), and prints what to run next.
