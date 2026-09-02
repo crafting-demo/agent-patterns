@@ -19,13 +19,18 @@ cs template update eval-kata patterns/agent-eval/template/eval-kata.yaml
 List what this org already has:
 
 ```sh
-cs llm provider list
-cs llm model list
+cs llm config providers list
+cs llm config models list
 ```
 
-Choose two distinct `provider:name` selectors (for example `openai:gpt-5.4` and another model from the same list). Prefer two different providers when the catalog has them.
+(Some sites expose aliases `cs llm provider list` / `cs llm model list`. If those fail, use the `cs llm config …` forms above.)
 
-- If the user named two models in their install message, use those — but only if they appear in `cs llm model list`.
+Choose two distinct `provider:name` selectors that can actually run a chat/coding session:
+
+- If the user named two models in their install message, use those — but only if they appear in the model list.
+- Prefer two different providers when the catalog has them.
+- Skip FIM / instruct-only models (purpose `CODING_FIM`, or a name like `*-instruct`).
+- Prefer a generally available chat model over a `preview` / experimental id when another provider already has a stable chat model. A preview model that never answers is not a second model in the matrix.
 - Do **not** assign CODING or FAST purposes. Do **not** invent a model that is not in the catalog.
 - If they asked for a model that is missing, stop and tell them how to add it (official OpenAI provider, or OpenAI-compatible `base_url` for a router such as OpenRouter), then wait. Do not remap purposes as a workaround.
 

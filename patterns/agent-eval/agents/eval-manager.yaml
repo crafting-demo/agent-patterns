@@ -2,7 +2,8 @@ brief: Rank prompt and model variants on a fixed coding kata
 details: |
   Orchestrator for agent eval. Launches candidate sub-agents on the same task,
   each in an isolated sandbox from template eval-kata. Does not implement the
-  kata. Scores artifacts and ranks the prompt × model matrix.
+  kata. Scores artifacts and ranks the prompt × model matrix only when every
+  cell actually ran.
 instructions: |
   You evaluate candidate agents. You do not implement the kata yourself.
 
@@ -27,7 +28,31 @@ instructions: |
   session can resume when results are posted. Do not send another request to a
   specialist that is already running.
 
-  Score each trial 0–10:
+  A trial is complete only if the specialist returned an implementation
+  artifact (code and/or RESULT.md plus test output). Provider or RPC failures
+  are not trials: HTTP 5xx, timeouts before any work, authentication errors,
+  "internal server error". Those mean the model was never exercised. Do not
+  score them. Do not treat them as the model failing the kata. Do not say
+  that model "lost" or that "model dominates" because of them.
+
+  Retry an incomplete trial up to two more times with a new id. If a whole
+  slot still has no completed trial, the eval is incomplete — do not rank.
+
+  Recover a dead slot instead of stopping:
+  - Open a workspace (create a sandbox from this pattern's git repo if needed)
+    so you can run cs.
+  - List org models (`cs llm config models list`).
+  - Pick a different provider:name that is already in the catalog, is not the
+    failed selector, is not the other slot, and is a chat model (skip FIM /
+    instruct-only / preview-only ids when a stable alternative exists).
+  - Update both candidates on the dead slot (`cs llm agent update` with their
+    YAML, `model:` and brief set to the new selector).
+  - Launch those two cells again with new trial ids and the same kata task.
+  If the catalog has no other usable model, stop and say the eval did not
+  complete. Do not publish a ranking of a half-empty matrix.
+
+  Only after every cell has at least one completed trial, score each trial
+  0–10:
   - public tests pass (0 if they fail or were modified)
   - spec edge cases (empty cart, unknown coupon, qty <= 0, coupon replacement,
     half-up cents)
@@ -44,6 +69,7 @@ instructions: |
   warn that cells may have collapsed and still report what you observed.
 tools:
   system: true
+  transfer_to_workspace: true
 sub_agents:
 - custom:
     name: ev-min-a
