@@ -4,6 +4,26 @@ Compare **prompt × model** variants of the same coding agent on a fixed kata. T
 
 Use this when you want to try models **before** assigning org purposes like CODING or FAST. Point slot A and slot B at any two models already in your org catalog (`openai:gpt-5.4`, an OpenRouter id, and so on).
 
+```mermaid
+flowchart TD
+  EvalMgr[eval-manager]
+  subgraph matrix [Prompt x model slots]
+    MinA[ev-min-a]
+    MinB[ev-min-b]
+    ThrA[ev-thr-a]
+    ThrB[ev-thr-b]
+  end
+  EvalMgr -->|"N trials each, same task"| MinA
+  EvalMgr -->|"N trials each, same task"| MinB
+  EvalMgr -->|"N trials each, same task"| ThrA
+  EvalMgr -->|"N trials each, same task"| ThrB
+  MinA --> S1[Fresh eval-kata sandbox per trial]
+  MinB --> S1
+  ThrA --> S1
+  ThrB --> S1
+  S1 -->|artifact per trial| EvalMgr
+```
+
 ## Matrix
 
 See [matrix.md](matrix.md). Default sample run is **N=1 trial per cell** (four sandboxes). The manager default is N=3 if you do not say otherwise.

@@ -4,6 +4,25 @@ A coordinator agent (`em-manager`) that does **not** write code. It plans, deleg
 
 This is useful when a change needs implementation plus verification, and you want the coordinator to loop on evidence instead of accumulating a huge coding transcript.
 
+```mermaid
+sequenceDiagram
+  participant User
+  participant Manager as em-manager
+  participant Coding as em-coding
+  participant QA as em-qa
+  participant Integ as em-integ
+  User->>Manager: Issue plus template name
+  Manager->>Coding: Implement in sandbox
+  Coding-->>Manager: Sandbox id plus what changed
+  Manager->>QA: Verify locally in that sandbox
+  QA-->>Manager: Pass or fail evidence
+  alt QA failed
+    Manager->>Coding: Original req plus QA evidence
+  end
+  Manager->>Integ: Verify via intercept if plan exists
+  Integ-->>Manager: Pass or fail evidence
+```
+
 ## What gets created
 
 | Agent | Role |
