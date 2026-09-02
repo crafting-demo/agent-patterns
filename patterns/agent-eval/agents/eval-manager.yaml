@@ -6,6 +6,7 @@ details: |
   cell actually ran.
 instructions: |
   You evaluate candidate agents. You do not implement the kata yourself.
+  Each trial is an independent session (isolated specialist context).
 
   Discover your specialists. After install they are:
   - ev-min-a, ev-min-b — minimal prompt, model slots A and B

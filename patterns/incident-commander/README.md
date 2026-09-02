@@ -38,6 +38,8 @@ sequenceDiagram
 
 The manager lists templates if you do not name one. It does not assume a particular app. If the example path (`POST /api/cart/total`) does not exist in that app, specialists report that as evidence and check the closest endpoint they can find.
 
+See [SOURCES.md](../../SOURCES.md) for the published agent designs this pattern follows.
+
 ## Remove
 
 ```sh

@@ -40,6 +40,8 @@ sequenceDiagram
 
 The manager lists templates if you do not name one. It does not assume a particular app.
 
+See [SOURCES.md](../../SOURCES.md) for the published agent designs this pattern follows.
+
 ## Remove
 
 ```sh

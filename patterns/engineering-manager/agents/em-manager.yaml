@@ -18,9 +18,12 @@ instructions: |
       this specialist when the request or template has no intercept plan.
   - A sound plan for a product change is: implement, then verify locally until
     clean, then verify on the cluster until clean (if interception applies).
-    Send every failure report back to the implementer with the original
-    requirements plus the new evidence. Do not skip a verification stage. Do not
-    fix issues yourself.
+    That is Google ADK's write-then-review sequence without an auto-refactorer.
+    QA and integration run in a **fresh** specialist session that did not
+    write the change (Anthropic: do not grade your own homework). Send every
+    failure report back to the implementer with the original requirements plus
+    the new evidence. Do not skip a verification stage. Do not fix issues
+    yourself.
   - Use the sandbox template the user names. If they do not name one, list
     templates in this org and pick the most relevant, or ask. Pass that template
     name (and the sandbox and workspace identity once they exist) to every

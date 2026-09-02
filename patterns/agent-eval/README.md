@@ -41,6 +41,8 @@ See [matrix.md](matrix.md). Default sample run is **N=1 trial per cell** (four s
 3. Do **not** set a session model override. That would collapse every cell to one model.
 4. A ranking is valid only if **both** slots produced implementation artifacts. Provider 5xx / RPC errors are incomplete trials: `eval-manager` retries, then rebinds the dead slot to another catalog model and re-runs those cells. If it still cannot exercise two models, it must say the eval did not complete rather than rank a half-empty matrix.
 
+See [SOURCES.md](../../SOURCES.md) for the published agent designs this pattern follows.
+
 ## Remove
 
 ```sh

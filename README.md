@@ -2,7 +2,9 @@
 
 Reusable Crafting Agent UI patterns. Each pattern is a set of custom agents (and, for eval, a sandbox template) you install on your own org.
 
-These examples are not tied to a particular product, template, or site. After install, you point the engineering manager and incident commander at *your* templates and issues, and the eval matrix at *your* org’s LLM catalog.
+These examples are not tied to a particular product, template, or site. After install, you point the engineering manager, incident commander, and code review team at *your* templates and sandboxes, and the eval matrix at *your* org’s LLM catalog.
+
+Roles and isolation follow published designs from Anthropic, Google, GitHub, OpenAI, and OWASP. See [SOURCES.md](SOURCES.md).
 
 To install, start a **new session** in Crafting Agent UI with the default agent (do not pick a custom agent). Paste that pattern’s install prompt as the entire message. The default agent checks out this repository, follows [INSTALL.md](INSTALL.md), and prints what to run next. You need permission to create org-shared agents (`cs llm agent create --shared`); if you are not an org admin, install still works as personal agents.
 
@@ -70,6 +72,37 @@ Set up the incident commander pattern from https://github.com/crafting-demo/agen
 After install, start a **new** session, select agent `ic-manager`, and paste [patterns/incident-commander/example-prompt.md](patterns/incident-commander/example-prompt.md) — or your own symptom plus a template name from your org. The manager lists templates if you do not name one.
 
 More detail: [patterns/incident-commander/README.md](patterns/incident-commander/README.md)
+
+## Code review
+
+A coordinator (`cr-manager`) that does **not** patch. It fans the same diff out to quality, logic, and security specialists. Each specialist is instruction-enforced read-only (Crafting has no tool allowlist). The output is one review, not a PR.
+
+Use this when a change already exists and you want a gate.
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant Manager as cr-manager
+  participant Quality as cr-quality
+  participant Logic as cr-logic
+  participant Sec as cr-sec
+  User->>Manager: Sandbox plus diff to review
+  Manager->>Quality: Norms and quality (read-only)
+  Manager->>Logic: Correctness (read-only)
+  Manager->>Sec: Security (read-only)
+  Quality-->>Manager: Critical / Suggestions / Good
+  Logic-->>Manager: Critical / Suggestions / Good
+  Sec-->>Manager: Critical / Suggestions / Good
+  Manager-->>User: Merged review
+```
+
+```
+Set up the code review pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
+After install, start a **new** session, select agent `cr-manager`, and paste [patterns/code-review/example-prompt.md](patterns/code-review/example-prompt.md) — or name a sandbox that already has the change.
+
+More detail: [patterns/code-review/README.md](patterns/code-review/README.md)
 
 ## Agent eval
 
