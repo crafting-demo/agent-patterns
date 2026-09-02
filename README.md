@@ -2,7 +2,7 @@
 
 Reusable Crafting Agent UI patterns. Each pattern is a set of custom agents (and, for eval, a sandbox template) you install on your own org.
 
-These examples are not tied to a particular product, template, or site. After install, you point the engineering manager at *your* templates and issues, and the eval matrix at *your* org’s LLM catalog.
+These examples are not tied to a particular product, template, or site. After install, you point the engineering manager and incident commander at *your* templates and issues, and the eval matrix at *your* org’s LLM catalog.
 
 To install, start a **new session** in Crafting Agent UI with the default agent (do not pick a custom agent). Paste that pattern’s install prompt as the entire message. The default agent checks out this repository, follows [INSTALL.md](INSTALL.md), and prints what to run next. You need permission to create org-shared agents (`cs llm agent create --shared`); if you are not an org admin, install still works as personal agents.
 
@@ -38,6 +38,38 @@ Set up the engineering manager pattern from https://github.com/crafting-demo/age
 After install, start a **new** session, select agent `em-manager`, and paste [patterns/engineering-manager/example-prompt.md](patterns/engineering-manager/example-prompt.md) — or your own issue plus a template name from your org. The manager lists templates if you do not name one.
 
 More detail: [patterns/engineering-manager/README.md](patterns/engineering-manager/README.md)
+
+## Incident commander
+
+A coordinator (`ic-manager`) that does **not** patch. It plans, delegates reproduction, and optional cluster checks. Specialists (`ic-repro`, `ic-cluster`) each get a self-contained task in their own session. The output is a diagnosis and a recommended next step, not a pull request.
+
+Use this when the question is “what broke and where,” not “implement this issue.”
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant Manager as ic-manager
+  participant Repro as ic-repro
+  participant Cluster as ic-cluster
+  User->>Manager: Symptom plus template name
+  Manager->>Repro: Reproduce in sandbox
+  Repro-->>Manager: Local evidence plus sandbox id
+  alt Template has intercept plan
+    Manager->>Cluster: Same flow via intercept
+    Cluster-->>Manager: Cluster evidence
+  else No intercept plan
+    Manager-->>User: Skip cluster and say why
+  end
+  Manager-->>User: Diagnosis and recommended next step
+```
+
+```
+Set up the incident commander pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
+After install, start a **new** session, select agent `ic-manager`, and paste [patterns/incident-commander/example-prompt.md](patterns/incident-commander/example-prompt.md) — or your own symptom plus a template name from your org. The manager lists templates if you do not name one.
+
+More detail: [patterns/incident-commander/README.md](patterns/incident-commander/README.md)
 
 ## Agent eval
 
