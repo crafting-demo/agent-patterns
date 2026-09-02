@@ -11,8 +11,10 @@ If the files of `https://github.com/crafting-demo/agent-patterns` are **already*
 Otherwise:
 
 1. Create a sandbox from this git repository (the URL the user pasted).
-2. Target a workspace in that sandbox.
+2. Target a workspace in that sandbox **immediately**. Do not stop to ask whether to open it.
 3. Hand off to the workspace agent so you can run `cs`.
+
+This is an install, not an exploration. After the sandbox exists, keep going until the pattern resources are created and you have printed the example prompt.
 
 Work from the repository root (the directory that contains this `INSTALL.md`).
 
