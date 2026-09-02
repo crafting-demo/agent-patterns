@@ -40,11 +40,12 @@ Agent names are at most 20 characters: lowercase letters, digits, and dashes.
 
 Read the user message.
 
+- If they asked for the **PDE team** pattern, continue at `patterns/pde-team/INSTALL.md`.
 - If they asked for the **engineering manager** pattern, continue at `patterns/engineering-manager/INSTALL.md`.
 - If they asked for the **incident commander** pattern, continue at `patterns/incident-commander/INSTALL.md`.
 - If they asked for the **code review** pattern, continue at `patterns/code-review/INSTALL.md`.
 - If they asked for the **agent eval** pattern, continue at `patterns/agent-eval/INSTALL.md`.
-- If they asked for more than one, do engineering manager first, then incident commander, then code review, then agent eval.
+- If they asked for more than one, do PDE team first, then engineering manager, then incident commander, then code review, then agent eval.
 
 ## 4. When you are done
 

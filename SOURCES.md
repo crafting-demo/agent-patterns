@@ -25,6 +25,17 @@ Official specialist splits we mapped onto `cr-quality` / `cr-logic` / `cr-sec`:
 - OpenAI Codex: put review rules in `AGENTS.md` ([guide](https://developers.openai.com/codex/guides/agents-md)).
 - **OWASP Top 10** and **CWE** as the security taxonomy (same approach as public Copilot `security-reviewer` agents).
 
+## PDE team
+
+Product definition before implementation, plus a design specialist that locks a look before anyone writes UI:
+
+- **Get Shit Done (GSD)** — [open-gsd/gsd-core](https://github.com/open-gsd/gsd-core) (MIT; successor to archived `gsd-build/get-shit-done`). `/gsd-new-project` captures vision and writes planning artifacts. `/gsd-discuss-phase` asks gray-area questions inline and writes locked decisions (`D-01`, `D-02`, …), deferred ideas, and discretion into CONTEXT.md so the planner does not re-ask. Downstream plans must honor locked decisions and must not sneak deferred ideas into v1. Docs: [discuss a phase](https://github.com/open-gsd/gsd-core/blob/next/docs/how-to/discuss-a-phase.md), [planning artifacts](https://docs.opengsd.net/core/concepts/planning-artifacts). We do not vendor GSD workflows; `pe-lead` asks the user, `pe-pm` / `pe-em` write the artifacts.
+- **Anthropic frontend-design** — official Claude Code plugin ([plugin page](https://claude.com/plugins/frontend-design), [repo](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design)). Authors: Prithvi Rajasekaran, Alexander Bricken. The skill is a public `SKILL.md`: commit to a distinctive aesthetic **before** CSS, two-pass (plan then critique vs generic defaults), avoid common AI-slop palettes unless the brief asked. Cookbook: [prompting for frontend aesthetics](https://github.com/anthropics/claude-cookbooks/blob/main/coding/prompting_for_frontend_aesthetics.ipynb).
+- **OpenAI frontend-skill** — published with [Designing delightful frontends with GPT-5.4](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4). Working model: visual thesis, content plan, interaction thesis. Constraints: two typefaces max, one accent, cardless by default, brand first, no Inter/Roboto/purple-on-white as personality. App UI: Linear-style restraint. Install in Codex via `$skill-installer frontend-skill`. Also in [openai/skills](https://github.com/openai/skills).
+- **Optional Slack** — [crafting-demo/coworker-bot](https://github.com/crafting-demo/coworker-bot) watches Slack @mentions and starts `cs llm session run`; Slack MCP can post (`chat:write`). `pe-notify` posts when that path exists and skips otherwise. Slack setup: [coworker-bot Slack provider](https://github.com/crafting-demo/coworker-bot/blob/master/docs/setup/providers/slack.md).
+
+We do not copy those SKILL.md files into this repo. `pe-design` paraphrases the process (thesis first, no product implementation).
+
 ## Engineering manager
 
 - Google ADK sequential **writer then reviewer** (implement, then QA — we skip their refactorer agent; the manager sends failures back to `em-coding`).
@@ -39,3 +50,4 @@ Official specialist splits we mapped onto `cr-quality` / `cr-logic` / `cr-sec`:
 
 - Isolated trial sessions = Anthropic subagent isolation (each cell is a new context).
 - Independent repeats so one lucky run does not decide the ranking (eval hygiene, not a vendor plugin).
+

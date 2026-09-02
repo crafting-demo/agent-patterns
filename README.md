@@ -2,11 +2,44 @@
 
 Reusable Crafting Agent UI patterns. Each pattern is a set of custom agents (and, for eval, a sandbox template) you install on your own org.
 
-These examples are not tied to a particular product, template, or site. After install, you point the engineering manager, incident commander, and code review team at *your* templates and sandboxes, and the eval matrix at *your* org’s LLM catalog.
+These examples are not tied to a particular product, template, or site. After install, you point the PDE team, engineering manager, incident commander, and code review team at *your* templates and sandboxes, and the eval matrix at *your* org’s LLM catalog.
 
 Roles and isolation follow published designs from Anthropic, Google, GitHub, OpenAI, and OWASP. See [SOURCES.md](SOURCES.md).
 
 To install, start a **new session** in Crafting Agent UI with the default agent (do not pick a custom agent). Paste that pattern’s install prompt as the entire message. The default agent checks out this repository, follows [INSTALL.md](INSTALL.md), and prints what to run next. You need permission to create org-shared agents (`cs llm agent create --shared`); if you are not an org admin, install still works as personal agents.
+
+## PDE team
+
+A coordinator (`pe-lead`) that does **not** implement. It asks the user the hard product questions, then fans out to product, design, and engineering specialists. Those write `REQUIREMENTS.md`, `DESIGN.md`, and `ENGINEERING.md` in a sandbox. Implementation is a later `em-manager` session.
+
+Use this when the work is still “what are we building and how should it look,” not “implement this issue.” Product definition follows GSD discuss / new-project (locked D-nn decisions). Design follows Anthropic `frontend-design` and OpenAI `frontend-skill` (visual thesis first, no AI-slop defaults). Optional Slack pings go through [coworker-bot](https://github.com/crafting-demo/coworker-bot).
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant Lead as pe-lead
+  participant PM as pe-pm
+  participant Design as pe-design
+  participant EM as pe-em
+  User->>Lead: Product idea
+  Lead->>User: Gray-area questions
+  User->>Lead: Answers
+  Lead->>PM: Write REQUIREMENTS.md
+  Lead->>Design: Write DESIGN.md
+  Lead->>EM: Write ENGINEERING.md
+  PM-->>Lead: Locked D-nn
+  Design-->>Lead: Visual thesis
+  EM-->>Lead: Stack and phases
+  Lead-->>User: Artifacts ready, next is em-manager
+```
+
+```
+Set up the PDE team pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
+After install, start a **new** session, select agent `pe-lead`, and paste [patterns/pde-team/example-prompt.md](patterns/pde-team/example-prompt.md) — or your own product idea plus a template name from your org.
+
+More detail: [patterns/pde-team/README.md](patterns/pde-team/README.md)
 
 ## Engineering manager
 
