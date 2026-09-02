@@ -6,6 +6,20 @@ These examples are not tied to a particular product, template, or site. After in
 
 Roles and isolation follow published designs from Anthropic, Google, GitHub, OpenAI, and OWASP. See [SOURCES.md](SOURCES.md).
 
+## Patterns
+
+| Pattern | Start agent | Use when | Output |
+| --- | --- | --- | --- |
+| [PDE team](#pde-team) | `pe-lead` | You have an idea, not a spec | `REQUIREMENTS.md`, `DESIGN.md`, `ENGINEERING.md` in a sandbox |
+| [Engineering manager](#engineering-manager) | `em-manager` | A change needs implementation plus verification | Verified change in a sandbox (no PR unless asked) |
+| [Incident commander](#incident-commander) | `ic-manager` | Something broke and you want to know where | Diagnosis and next step, no patch |
+| [Code review](#code-review) | `cr-manager` | A change exists and you want a gate | One merged Critical / Suggestions / Good practices review |
+| [Agent eval](#agent-eval) | `eval-manager` | You want to compare prompts and models before assigning purposes | Ranked prompt × model matrix |
+
+Typical order: PDE team → engineering manager → code review. Incident commander and agent eval stand alone.
+
+## Install
+
 To install, start a **new session** in Crafting Agent UI with the default agent (do not pick a custom agent). Paste that pattern’s install prompt as the entire message. The default agent checks out this repository, follows [INSTALL.md](INSTALL.md), and prints what to run next. You need permission to create org-shared agents (`cs llm agent create --shared`); if you are not an org admin, install still works as personal agents.
 
 ## PDE team
