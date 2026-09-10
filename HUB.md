@@ -4,7 +4,7 @@ Three patterns use agents from the Crafting Agent Hub: [vendor contract review](
 
 Their YAML is compiled and **committed to this repository**. Installing a pattern reads only this checkout; it never clones or builds the hub. Every vendored file opens with a comment naming its hub package, the exact commit it was compiled from, and the command that produced it.
 
-Vendored from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub) at commit [`192a08f`](https://github.com/crafting-demo/agent-hub/commit/192a08ff01abc6cc3ca6db22816de3d63cf09f9d) (2026-09-10).
+Vendored from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub) at commit [`0df41e3`](https://github.com/crafting-demo/agent-hub/commit/0df41e33bda4f4fbd5c3fdea8e41a6dd03d87663) (2026-09-10).
 
 | Pattern | Agents | Sandbox templates |
 | --- | --- | --- |

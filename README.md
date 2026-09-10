@@ -196,7 +196,7 @@ More detail: [patterns/agent-eval/README.md](patterns/agent-eval/README.md)
 
 A coordinator (`legal-counsel`) that does **not** give legal advice. It fans the same vendor agreement to `contract-analyst` and `compliance-reviewer`. Output is one GREEN / YELLOW / RED memo, labeled as a draft for attorney review. The personas come from the hub catalog (Anthropic knowledge-work legal plugin, paraphrased).
 
-Use this when the work is “what is wrong with this vendor paper,” not “implement this issue.” It is also the pattern to show someone who assumes agents only write code — a short demo contract and negotiation playbook ship in `fixtures/`.
+Use this when the work is “what is wrong with this vendor paper,” not “implement this issue.” It is also the pattern to show someone who assumes agents only write code — a short demo contract (as a `.docx`, since that is how contracts actually arrive) and a negotiation playbook ship in `fixtures/`. The specialists' sandbox template installs pandoc to read Word files and to hand redlines back as `.docx`.
 
 ```mermaid
 sequenceDiagram

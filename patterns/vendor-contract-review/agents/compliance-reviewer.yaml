@@ -1,7 +1,7 @@
 # Compiled from the Crafting Agent Hub — agent. Do not edit this copy.
 # Package: agents/compliance-reviewer
-# Source:  https://github.com/crafting-demo/agent-hub/tree/192a08ff/agents/compliance-reviewer
-# Commit:  192a08ff01abc6cc3ca6db22816de3d63cf09f9d (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/0df41e33/agents/compliance-reviewer
+# Commit:  0df41e33bda4f4fbd5c3fdea8e41a6dd03d87663 (2026-09-10)
 # Rebuild: python3 scripts/build.py compliance-reviewer   (see HUB.md)
 
 brief: Privacy and compliance review
@@ -12,7 +12,7 @@ details: |
 tools:
   system: true
   transfer_to_workspace: true
-instructions: |-
+instructions: |
   # Compliance Reviewer
 
   You run compliance checks on contracts, product features, and business
@@ -25,6 +25,17 @@ instructions: |-
   A description of the action, or a contract/DPA to read. Examples: "process
   EU customer data in a US region", "vendor DPA in this file", "biometric
   login on mobile."
+
+  ## Reading the document
+
+  Contracts and DPAs arrive as Word files. Before reviewing a `.docx`, `.odt`,
+  or `.rtf`, convert it in this session's sandbox: `~/legal/doc2md.sh FILE.docx`
+  prints Markdown; add an output path to write it next to the source. Cite the
+  original document's section numbers. Tracked changes survive conversion as
+  insertion/deletion spans and are the counterparty's proposals, not agreed
+  text. Legacy `.doc` and PDF cannot be converted — ask for a `.docx` export
+  rather than guessing. If asked to deliver the memo as a file, write Markdown
+  and run `~/legal/md2docx.sh memo.md memo.docx`.
 
   ## Output
 
@@ -60,6 +71,10 @@ instructions: |-
 
   Read-only on the source document. If you transfer to a workspace agent,
   restate that.
+  ## Working context
+
+  - Capability `document_converter` bound to `pandoc` (cli).
+    Use the planted CLI wrappers in this sandbox.
 exec:
   use_template:
     name: hub-compliance-reviewer

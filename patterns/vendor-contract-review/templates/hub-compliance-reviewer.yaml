@@ -1,12 +1,25 @@
 # Compiled from the Crafting Agent Hub — sandbox template hub-compliance-reviewer. Do not edit this copy.
 # Package: agents/compliance-reviewer
-# Source:  https://github.com/crafting-demo/agent-hub/tree/192a08ff/agents/compliance-reviewer
-# Commit:  192a08ff01abc6cc3ca6db22816de3d63cf09f9d (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/0df41e33/agents/compliance-reviewer
+# Commit:  0df41e33bda4f4fbd5c3fdea8e41a6dd03d87663 (2026-09-10)
 # Rebuild: python3 scripts/build.py compliance-reviewer   (see HUB.md)
 # Create this as template `hub-compliance-reviewer`; the agent references it by that name.
 
 workspaces:
-- name: agent
+- name: legal
+  checkouts:
+  - path: legal
+    manifest:
+      overlays:
+      - inline:
+          hooks:
+            post-checkout:
+              cmd: |
+                [[ -x ./bin/pandoc ]] || {
+                  mkdir -p bin
+                  curl -sSfL https://github.com/jgm/pandoc/releases/download/3.10.2/pandoc-3.10.2-linux-amd64.tar.gz \
+                    | tar -zx --strip-components 2 -C bin pandoc-3.10.2/bin/pandoc
+                }
   system:
     files:
     - path: ~/.agents/skills/compliance-check/SKILL.md
@@ -20,8 +33,58 @@ workspaces:
         # Compliance check
 
         1. Name the initiative or document.
-        2. List applicable regimes you actually have reason to apply (do not dump every regulation).
-        3. Table of requirements vs status.
-        4. Approvals and further review.
-        5. Mark training-knowledge citations as unverified.
-        6. Disclaimer: draft for attorney review.
+        2. If the document is `.docx`/`.odt`/`.rtf`, convert with `~/legal/doc2md.sh FILE` and read the Markdown. Legacy `.doc` and PDF: ask for a `.docx` export.
+        3. List applicable regimes you actually have reason to apply (do not dump every regulation).
+        4. Table of requirements vs status, citing the original section numbers.
+        5. Approvals and further review.
+        6. Mark training-knowledge citations as unverified.
+        7. Disclaimer: draft for attorney review. Deliver as `.docx` with `~/legal/md2docx.sh` if asked for a file.
+    - path: ~/legal/doc2md.sh
+      mode: '0755'
+      content: |
+        #!/bin/bash
+        # Convert a contract to Markdown so it can be reviewed as text.
+        # Usage: doc2md.sh INPUT [OUTPUT.md]   (prints to stdout when OUTPUT is omitted)
+        set -euo pipefail
+
+        in="${1:?usage: doc2md.sh INPUT [OUTPUT.md]}"
+        out="${2:-}"
+
+        case "${in,,}" in
+          *.doc)
+            echo "doc2md: '$in' is legacy binary Word (.doc). pandoc cannot read it; ask for a .docx export (Word or LibreOffice: File > Save As > .docx)." >&2
+            exit 2 ;;
+          *.pdf)
+            echo "doc2md: '$in' is a PDF. pandoc cannot read PDF input; ask for the .docx the PDF was produced from." >&2
+            exit 2 ;;
+        esac
+
+        # --track-changes=all keeps the counterparty's redlines visible as
+        # insertion/deletion spans instead of silently accepting them.
+        args=("$in" -t gfm --wrap=none --track-changes=all)
+        [[ -n "$out" ]] && args+=(-o "$out")
+        exec "$HOME/legal/bin/pandoc" "${args[@]}"
+    - path: ~/legal/md2docx.sh
+      mode: '0755'
+      content: |
+        #!/bin/bash
+        # Deliver a Markdown memo or redlines file as .docx, which is what counsel works in.
+        # Usage: md2docx.sh INPUT.md OUTPUT.docx
+        set -euo pipefail
+
+        in="${1:?usage: md2docx.sh INPUT.md OUTPUT.docx}"
+        out="${2:?usage: md2docx.sh INPUT.md OUTPUT.docx}"
+        exec "$HOME/legal/bin/pandoc" "$in" -f gfm -o "$out"
+    - path: ~/legal/AGENTS.md
+      mode: '0644'
+      content: |
+        Contracts arrive as Word files. Convert before reading:
+
+          ./doc2md.sh CONTRACT.docx              print the contract as Markdown
+          ./doc2md.sh CONTRACT.docx contract.md  write Markdown next to the source
+          ./md2docx.sh memo.md memo.docx         deliver a memo or redlines as .docx
+
+        Reads .docx, .odt, .rtf, .html. Does not read legacy .doc or PDF; ask for
+        a .docx export instead of guessing. Tracked changes in the source survive
+        as insertion/deletion spans and are the counterparty's proposals, not
+        agreed text.

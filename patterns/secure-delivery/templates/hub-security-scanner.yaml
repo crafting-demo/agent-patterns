@@ -1,7 +1,7 @@
 # Compiled from the Crafting Agent Hub — sandbox template hub-security-scanner. Do not edit this copy.
 # Package: agents/security-scanner
-# Source:  https://github.com/crafting-demo/agent-hub/tree/192a08ff/agents/security-scanner
-# Commit:  192a08ff01abc6cc3ca6db22816de3d63cf09f9d (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/0df41e33/agents/security-scanner
+# Commit:  0df41e33bda4f4fbd5c3fdea8e41a6dd03d87663 (2026-09-10)
 # Rebuild: python3 scripts/build.py security-scanner   (see HUB.md)
 # Create this as template `hub-security-scanner`; the agent references it by that name.
 

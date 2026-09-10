@@ -26,4 +26,8 @@ Set up the vendor contract review pattern from https://github.com/crafting-demo/
 
 After install, start a **new** session, select `legal-counsel`, and paste [example-prompt.md](example-prompt.md).
 
-The sample MSA in `fixtures/` is an original short demo contract (not a CUAD dump). Swap in a public CUAD agreement if you want a longer corpus.
+## Fixtures
+
+Contracts arrive as Word files, so the demo does too. `fixtures/sample-msa.docx` is what the prompt hands to the agents; `contract-analyst` and `compliance-reviewer` convert it with pandoc, which their sandbox template installs. `fixtures/sample-msa.md` is the readable source that `.docx` was generated from (`pandoc sample-msa.md -f gfm -o sample-msa.docx`); edit the Markdown and regenerate rather than editing the Word file. `fixtures/PLAYBOOK.md` holds illustrative negotiation positions — replace it with your own before trusting the flags.
+
+The MSA is an original short demo contract (not a CUAD dump). Swap in any real `.docx` agreement to try it on something longer. Legacy `.doc` and PDF are not converted; the agents will ask for a `.docx` export.
