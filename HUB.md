@@ -4,7 +4,7 @@ Three patterns use agents from the Crafting Agent Hub: [vendor contract review](
 
 Their YAML is compiled and **committed to this repository**. Installing a pattern reads only this checkout; it never clones or builds the hub. Every vendored file opens with a comment naming its hub package, the exact commit it was compiled from, and the command that produced it.
 
-Vendored from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub) at commit [`0df41e3`](https://github.com/crafting-demo/agent-hub/commit/0df41e33bda4f4fbd5c3fdea8e41a6dd03d87663) (2026-09-10).
+Vendored from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub) at commit [`b9ba570`](https://github.com/crafting-demo/agent-hub/commit/b9ba5702addf7bc6277d1d0575e6cbafa73202e7) (2026-09-10).
 
 | Pattern | Agents | Sandbox templates |
 | --- | --- | --- |
@@ -13,6 +13,8 @@ Vendored from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-h
 | Backlog to reviewed change | `product-manager`, `software-engineer`, `qa-engineer`, `security-scanner`, `code-reviewer`, `engineering-manager` | `hub-product-manager`, `hub-software-engineer`, `hub-qa-engineer`, `hub-security-scanner`, `hub-code-reviewer` |
 
 An agent that ships skills or a CLI carries a sandbox template, and its `exec.use_template.name` points at `hub-<id>`. Create the template before the agent. Coordinators (`legal-counsel`, `engineering-manager`) have no template and reference their specialists by name, so create specialists first — including `security-scanner`, which `engineering-manager` names even when a pattern's task does not need a scan.
+
+At this pin the hub collapsed four overlapping roles into the agents that already owned the job. Every id and template name above is unchanged, so the install steps and example prompts are unaffected, but four personas grew a second mode: `product-manager` also writes requirements with locked `D-nn` decisions, `engineering-manager` also writes `ENGINEERING.md` (and so now takes `transfer_to_workspace`), `qa-engineer` also verifies through Kubernetes interception, and `code-reviewer` absorbed the standalone security review.
 
 ## Refreshing to a newer hub version
 

@@ -1,7 +1,7 @@
 # Compiled from the Crafting Agent Hub — sandbox template hub-software-engineer. Do not edit this copy.
 # Package: agents/software-engineer
-# Source:  https://github.com/crafting-demo/agent-hub/tree/0df41e33/agents/software-engineer
-# Commit:  0df41e33bda4f4fbd5c3fdea8e41a6dd03d87663 (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/b9ba5702/agents/software-engineer
+# Commit:  b9ba5702addf7bc6277d1d0575e6cbafa73202e7 (2026-09-10)
 # Rebuild: python3 scripts/build.py software-engineer   (see HUB.md)
 # Create this as template `hub-software-engineer`; the agent references it by that name.
 

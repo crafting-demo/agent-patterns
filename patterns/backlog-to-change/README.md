@@ -1,6 +1,6 @@
 # Backlog to reviewed change
 
-Multi-agent demo across **sessions**: `product-manager` grooms or specs work from a ticket board (Jira or Linear chosen at install), `engineering-manager` delivers with `software-engineer` + `qa-engineer`, then `code-reviewer` gates the diff.
+Multi-agent demo across **sessions**: `product-manager` specs the work from a pasted backlog (no ticket board bound here; see [HUB.md](../../HUB.md) to attach Jira or Linear), `engineering-manager` delivers with `software-engineer` + `qa-engineer`, then `code-reviewer` gates the diff.
 
 The agents come from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub); their compiled definitions live in `agents/` and `templates/` here, pinned to a hub commit ([HUB.md](../../HUB.md)).
 
