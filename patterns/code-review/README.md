@@ -1,48 +1,43 @@
 # Code review
 
-A coordinator (`cr-manager`) that does **not** patch. It fans the same diff out to `cr-quality`, `cr-logic`, and `cr-sec`. Each specialist runs in its own session. The output is one review (Critical / Suggestions / Good practices), not a pull request.
+A single reviewer (`code-reviewer`) that does **not** patch. It reads the diff in an existing sandbox and covers three lenses in one pass: quality, correctness, and defensive security (mapped to OWASP Top 10 and CWE). The output is one review (Critical / Suggestions / Good practices), not a pull request.
 
-Crafting `LLMAgent` has no read-only tool allowlist (unlike Anthropic’s `Read`/`Grep`/`Glob`). Specialists still join a workspace so they can read the diff; instructions forbid writes. See [SOURCES.md](../../SOURCES.md).
+The agent comes from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub); its compiled definition lives in `agents/` and `templates/` here, pinned to a hub commit ([HUB.md](../../HUB.md)). The three lenses follow the specialist split in Anthropic's pr-review-toolkit; the hub collapses them into one agent because they take the same input and produce the same report.
 
-Use this when a change already exists (human, `em-coding`, or a PR sandbox) and you want a gate, not another implementer.
+Crafting `LLMAgent` has no read-only tool allowlist (unlike Anthropic's `Read`/`Grep`/`Glob`). The agent still joins a workspace so it can read the diff; instructions forbid writes, and it restates that contract on every workspace transfer.
+
+Use this when a change already exists (human, `software-engineer`, or a PR sandbox) and you want a gate, not another implementer. Ask for a security-only review when you want that lens alone.
 
 ```mermaid
 sequenceDiagram
   participant User
-  participant Manager as cr-manager
-  participant Quality as cr-quality
-  participant Logic as cr-logic
-  participant Sec as cr-sec
-  User->>Manager: Sandbox plus diff to review
-  Manager->>Quality: Norms and quality (read-only)
-  Manager->>Logic: Correctness (read-only)
-  Manager->>Sec: Security (read-only)
-  Quality-->>Manager: Critical / Suggestions / Good
-  Logic-->>Manager: Critical / Suggestions / Good
-  Sec-->>Manager: Critical / Suggestions / Good
-  Manager-->>User: Merged review
+  participant CR as code-reviewer
+  participant WS as workspace
+  User->>CR: Sandbox plus diff to review
+  CR->>WS: Read the diff (read-only)
+  WS-->>CR: Diff, norms, test results
+  CR-->>User: Critical / Suggestions / Good practices
 ```
 
 ## What gets created
 
 | Agent | Role |
 | --- | --- |
-| `cr-manager` | Fan-out, merge, publish. No sandbox writes. |
-| `cr-quality` | Team norms, structure, tests, comments. |
-| `cr-logic` | Correctness, edge cases, silent failures. |
-| `cr-sec` | OWASP-oriented defensive review. No exploits. |
+| `code-reviewer` | Quality, correctness, and security in one read-only review. No exploits, no patches. |
+
+If the repo under review has a `NORMS.md`, `CONTRIBUTING.md`, `AGENTS.md`, `CLAUDE.md`, or Copilot instructions file, the reviewer treats it as the team checklist. A sample [NORMS.md](NORMS.md) is in this directory.
 
 ## How to run
 
 1. Install with the root README prompt for this pattern (default agent).
-2. Start a **new** session and select agent `cr-manager`.
+2. Start a **new** session and select agent `code-reviewer`.
 3. Paste [example-prompt.md](example-prompt.md), or name a sandbox that already has the change.
 
 ## Remove
 
 ```sh
-cs llm agent remove cr-manager --shared
-cs llm agent remove cr-quality --shared
-cs llm agent remove cr-logic --shared
-cs llm agent remove cr-sec --shared
+cs llm agent remove code-reviewer --shared
+cs template remove hub-code-reviewer
 ```
+
+`code-reviewer` is shared with `backlog-to-change`; remove it only if that pattern is not installed.

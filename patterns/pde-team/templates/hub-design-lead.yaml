@@ -1,0 +1,33 @@
+# Compiled from the Crafting Agent Hub — sandbox template hub-design-lead. Do not edit this copy.
+# Package: agents/design-lead
+# Source:  https://github.com/crafting-demo/agent-hub/tree/b9ba5702/agents/design-lead
+# Commit:  b9ba5702addf7bc6277d1d0575e6cbafa73202e7 (2026-09-10)
+# Rebuild: python3 scripts/build.py design-lead   (see HUB.md)
+# Create this as template `hub-design-lead`; the agent references it by that name.
+
+workspaces:
+- name: agent
+  system:
+    files:
+    - path: ~/.agents/skills/design-brief/SKILL.md
+      mode: '0644'
+      content: |
+        ---
+        name: design-brief
+        description: Lock a visual direction before any UI is built. Two-pass thesis then critique, then write DESIGN.md. Use when a product needs a look, not an implementation.
+        ---
+
+        # Design brief
+
+        1. Draft the thesis: mood sentence, 4-6 hex palette, at most two typefaces,
+           layout concept with an ASCII wireframe, one signature element.
+        2. Critique it. If it could be any product in the category, revise.
+        3. Write `DESIGN.md`: locked visual system, copy tone, motion budget,
+           accessibility floor.
+
+        ## Do not
+
+        - Use Inter, Roboto, or the system stack as the personality face
+        - Reach for the common AI defaults (cream plus terracotta, acid green on
+          near-black, generic purple SaaS) unless the brief asked
+        - Implement product features or APIs

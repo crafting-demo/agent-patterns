@@ -1,8 +1,8 @@
 # Sources
 
-These Crafting patterns follow published agent designs from Anthropic, Google, GitHub, OpenAI, and OWASP. Crafting YAMLs are ours (sandbox join, `cs`, org-shared agents). The *roles*, *read-only reviewers*, *fresh specialist sessions*, and *review output shape* are the parts we interleaved from the sources below.
+The agents these patterns install are defined in [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub). Attribution for each agent lives there: the hub's [SOURCES.md](https://github.com/crafting-demo/agent-hub/blob/main/SOURCES.md) has the table, each agent's `manifest.yaml` lists its `sources`, and each agent's `README.md` explains what was taken from where. The hub's bar is an official vendor publication, a GitHub repository with at least 10,000 stars, or a published standard.
 
-We do not vendor other vendors’ plugin files. Their production prompts stay internal; these are the public docs and official examples they actually shipped.
+What this repository adds is the Crafting-side wiring (sandbox join, `cs`, org-shared agents, sub-agent fan-out) and the example tasks. We do not vendor other vendors' plugin files.
 
 ## Shared ideas (all patterns)
 
@@ -13,49 +13,17 @@ We do not vendor other vendors’ plugin files. Their production prompts stay in
 | Sequential pipeline: write, then review (we do **not** auto-refactor in the reviewer) | [Google ADK SequentialAgent](https://github.com/google/adk-docs/blob/main/docs/agents/workflow-agents/sequential-agents.md) |
 | Durable project norms live in-repo (`AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`) | [OpenAI Codex AGENTS.md](https://developers.openai.com/codex/guides/agents-md), Anthropic `CLAUDE.md` |
 
-## Code review
+## Per pattern
 
-Official specialist splits we mapped onto `cr-quality` / `cr-logic` / `cr-sec`:
+Pointers into the hub for the agents each pattern uses. Star counts are the hub's snapshots.
 
-- Anthropic Claude Code plugin **[pr-review-toolkit](https://github.com/anthropics/claude-code/tree/main/plugins/pr-review-toolkit)** — `code-reviewer`, `pr-test-analyzer`, `silent-failure-hunter`, `type-design-analyzer`, `comment-analyzer`, `code-simplifier`; fan-out via [`review-pr`](https://github.com/anthropics/claude-code/blob/main/plugins/pr-review-toolkit/commands/review-pr.md).
-- Anthropic plugin **[code-review](https://github.com/anthropics/claude-code/tree/main/plugins/code-review)** — parallel agents for project-guide compliance, bugs, history, comments; confidence scoring.
-- Anthropic docs: read-only **code-reviewer** (`Read`, `Grep`, `Glob`) and **security-reviewer** in [subagents](https://code.claude.com/docs/en/sub-agents) and [best practices](https://code.claude.com/docs/en/best-practices). Crafting has no tool allowlist on `LLMAgent`; we enforce the same contract in instructions (join an existing sandbox, do not write).
-- Google ADK **Code Reviewer** criteria: correctness, readability, efficiency, edge cases, best practices — [example](https://github.com/google/adk-docs/blob/main/examples/python/snippets/agents/workflow-agents/sequential_agent_code_development_agent.py).
-- GitHub Copilot official **[review-code](https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/review-code)** prompt: Critical / Suggestions / Good practices, line refs, constructive tone. Also [Copilot instructions files](https://github.blog/ai-and-ml/github-copilot/unlocking-the-full-power-of-copilot-code-review-master-your-instructions-files/).
-- OpenAI Codex: put review rules in `AGENTS.md` ([guide](https://developers.openai.com/codex/guides/agents-md)).
-- **OWASP Top 10** and **CWE** as the security taxonomy (same approach as public Copilot `security-reviewer` agents).
-
-## PDE team
-
-Product definition before implementation, plus a design specialist that locks a look before anyone writes UI:
-
-- **Get Shit Done (GSD)** — [open-gsd/gsd-core](https://github.com/open-gsd/gsd-core) (MIT; successor to archived `gsd-build/get-shit-done`). `/gsd-new-project` captures vision and writes planning artifacts. `/gsd-discuss-phase` asks gray-area questions inline and writes locked decisions (`D-01`, `D-02`, …), deferred ideas, and discretion into CONTEXT.md so the planner does not re-ask. Downstream plans must honor locked decisions and must not sneak deferred ideas into v1. Docs: [discuss a phase](https://github.com/open-gsd/gsd-core/blob/next/docs/how-to/discuss-a-phase.md), [planning artifacts](https://docs.opengsd.net/core/concepts/planning-artifacts). We do not vendor GSD workflows; `pe-lead` asks the user, `pe-pm` / `pe-em` write the artifacts.
-- **Anthropic frontend-design** — official Claude Code plugin ([plugin page](https://claude.com/plugins/frontend-design), [repo](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design)). Authors: Prithvi Rajasekaran, Alexander Bricken. The skill is a public `SKILL.md`: commit to a distinctive aesthetic **before** CSS, two-pass (plan then critique vs generic defaults), avoid common AI-slop palettes unless the brief asked. Cookbook: [prompting for frontend aesthetics](https://github.com/anthropics/claude-cookbooks/blob/main/coding/prompting_for_frontend_aesthetics.ipynb).
-- **OpenAI frontend-skill** — published with [Designing delightful frontends with GPT-5.4](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4). Working model: visual thesis, content plan, interaction thesis. Constraints: two typefaces max, one accent, cardless by default, brand first, no Inter/Roboto/purple-on-white as personality. App UI: Linear-style restraint. Install in Codex via `$skill-installer frontend-skill`. Also in [openai/skills](https://github.com/openai/skills).
-- **Optional Slack** — [crafting-demo/coworker-bot](https://github.com/crafting-demo/coworker-bot) watches Slack @mentions and starts `cs llm session run`; Slack MCP can post (`chat:write`). `pe-notify` posts when that path exists and skips otherwise. Slack setup: [coworker-bot Slack provider](https://github.com/crafting-demo/coworker-bot/blob/master/docs/setup/providers/slack.md).
-
-We do not copy those SKILL.md files into this repo. `pe-design` paraphrases the process (thesis first, no product implementation).
-
-## Engineering manager
-
-- Google ADK sequential **writer then reviewer** (implement, then QA — we skip their refactorer agent; the manager sends failures back to `em-coding`).
-- Anthropic: verification in a **fresh** specialist session that did not write the change.
-
-## Incident commander
-
-- Same read-only contract as Anthropic’s reviewer/security-reviewer: reproduce and report, do not patch.
-- Fresh specialist context so diagnosis is not graded by the session that would want to “just fix it.”
+- **PDE team**: `pde-lead` and `product-manager` follow Get Shit Done ([gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done), 64.5k, archived; live successor [open-gsd/gsd-core](https://github.com/open-gsd/gsd-core)) for gray-area questions and locked `D-nn` decisions, plus Anthropic's [product-management plugin](https://github.com/anthropics/knowledge-work-plugins/tree/main/product-management) for spec shape. `design-lead` follows Anthropic's [frontend-design](https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design) plugin and OpenAI's [frontend-skill](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4). `engineering-manager` in definition mode follows the GSD planner and roadmapper and Anthropic's plan-before-code guidance.
+- **Engineering manager** and **secure delivery**: `engineering-manager` follows Google ADK's writer-then-reviewer sequence and Anthropic's fresh-session verification. `qa-engineer` uses [Playwright](https://github.com/microsoft/playwright) for UI flows and Crafting's [Kubernetes intercept plan](https://docs.sandboxes.cloud/guides/developers/kubernetes-intercept-plan.html) for the cluster pass. `security-scanner` is Crafting's webscan CLI-in-template pattern with [lonkero](https://github.com/bountyyfi/lonkero).
+- **Incident commander**: same read-only contract as Anthropic's reviewer agents (reproduce and report, do not patch), in a fresh session so diagnosis is not graded by the session that would want to fix it.
+- **Code review**: the three lenses map onto Anthropic's [pr-review-toolkit](https://github.com/anthropics/claude-code/tree/main/plugins/pr-review-toolkit) specialist split and the read-only `code-reviewer` / `security-reviewer` contract in the [subagents docs](https://code.claude.com/docs/en/sub-agents). Output shape is GitHub Copilot's [review-code](https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/review-code) prompt. Security taxonomy is OWASP Top 10 and CWE.
+- **Vendor contract review**: Anthropic's [knowledge-work-plugins legal](https://github.com/anthropics/knowledge-work-plugins/tree/main/legal) and [claude-for-legal](https://github.com/anthropics/claude-for-legal); [pandoc](https://github.com/jgm/pandoc) for `.docx`. Draft for attorney review. The sample MSA is an original fixture.
+- **Backlog to reviewed change**: the product-management plugin for the PM, the engineering split above for delivery, the Copilot review shape for the gate.
 
 ## Agent eval
 
-- Isolated trial sessions = Anthropic subagent isolation (each cell is a new context).
-- Independent repeats so one lucky run does not decide the ranking (eval hygiene, not a vendor plugin).
-
-## Hub-backed demos
-
-These patterns install agents that come from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub), compiled and committed here at a pinned commit (see [HUB.md](HUB.md)). Attribution lives in that repo's `SOURCES.md` and each agent's README.
-
-- **Vendor contract review** — Anthropic [knowledge-work-plugins legal](https://github.com/anthropics/knowledge-work-plugins/tree/main/legal) (23.9k) and [claude-for-legal](https://github.com/anthropics/claude-for-legal). Draft for attorney review; we do not vendor plugin files. Sample MSA is an original fixture, not a CUAD dump.
-- **Secure delivery** — same engineering split as above, plus Crafting webscan CLI-in-template (`security-scanner` / lonkero wrapper).
-- **Backlog to reviewed change** — Anthropic product-management plugin for the PM; Copilot review-code shape for the gate.
-
+The one pattern that is not hub-backed. Isolated trial sessions follow Anthropic subagent isolation (each cell is a new context); independent repeats so one lucky run does not decide the ranking. Eval hygiene, not a vendor plugin. It stays here because it needs install-time model placeholders the hub does not compile yet.

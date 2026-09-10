@@ -2,27 +2,26 @@
 
 Do this after the repository root `INSTALL.md`.
 
-Create specialists **before** the manager (the manager references them by name).
+This agent is compiled from the Crafting Agent Hub and committed to this repo ([HUB.md](../../HUB.md)). Everything you need is in this checkout; do not clone or build the hub.
+
+Create the template **before** the agent that uses it.
 
 From the repository root:
 
 ```sh
-cs llm agent create ic-repro --shared patterns/incident-commander/agents/ic-repro.yaml
-cs llm agent create ic-cluster --shared patterns/incident-commander/agents/ic-cluster.yaml
-cs llm agent create ic-manager --shared patterns/incident-commander/agents/ic-manager.yaml
+cs template create hub-incident-commander patterns/incident-commander/templates/hub-incident-commander.yaml
+cs llm agent create incident-commander --shared patterns/incident-commander/agents/incident-commander.yaml
 ```
 
-If a name already exists, run the matching `cs llm agent update ... --shared FILE.yaml` instead.
+If a name already exists, run `cs template update ...` or `cs llm agent update incident-commander --shared FILE.yaml` instead.
 
-If `--shared` is denied, omit it on every command.
+If `--shared` is denied, omit it.
 
 Verify:
 
 ```sh
 cs llm agent list
-cs llm agent show ic-manager --shared
+cs llm agent show incident-commander --shared
 ```
 
-You should see `ic-manager` with two sub-agents, and `ic-repro`, `ic-cluster`.
-
-Then tell the user to start a **new** session, select agent `ic-manager`, and paste the contents of `patterns/incident-commander/example-prompt.md`.
+Then tell the user to start a **new** session, select agent `incident-commander`, and paste the contents of `patterns/incident-commander/example-prompt.md`.

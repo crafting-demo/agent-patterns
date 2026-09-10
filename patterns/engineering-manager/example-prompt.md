@@ -11,7 +11,7 @@ Task:
    - the template name
    - the sandbox name
    - one short paragraph on how someone would start services here (`cs up` / `cs ps` if the template defines daemons; otherwise say that no daemons are defined)
-2. Have local QA confirm the file exists and that the paragraph is accurate given `cs ps` (or the lack of daemons).
-3. If the template has a Kubernetes intercept plan, have integration start it and report status. If it does not, skip integration and say why.
+2. Have `qa-engineer` confirm the file exists and that the paragraph is accurate given `cs ps` (or the lack of daemons).
+3. If the template has a Kubernetes intercept plan, send `qa-engineer` a second, separate request to start it and report status. If it does not, skip the cluster pass and say why.
 
-Work is done when local QA has passed, and integration has either passed or been skipped because there is no intercept plan.
+Work is done when local QA has passed, and the cluster pass has either passed or been skipped because there is no intercept plan.

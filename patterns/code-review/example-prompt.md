@@ -8,10 +8,10 @@ Diff to review:
 - If that is empty, `git diff HEAD` (uncommitted).
 - If that is also empty, review the most recently changed tracked files and say this is a tree review, not a PR.
 
-Have quality, logic, and security specialists each review that same diff in their own session (read-only: they may read and run tests, they must not edit). Merge into one report:
+Cover quality, correctness, and security in one read-only review (you may read and run existing tests; you must not edit). Report:
 
-- **Critical** — must fix before merge
+- **Critical**: must fix before merge
 - **Suggestions**
 - **Good practices**
 
-Leave the sandbox as you found it. If there are Critical items, say that `em-manager` could take this sandbox and the review; do not implement.
+If a lens finds nothing, say so and name what you checked. Leave the sandbox as you found it. If there are Critical items, say that `engineering-manager` could take this sandbox and the review; do not implement.

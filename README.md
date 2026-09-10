@@ -6,22 +6,22 @@ These examples are not tied to a particular product, template, or site. After in
 
 Roles and isolation follow published designs from Anthropic, Google, GitHub, OpenAI, and OWASP. See [SOURCES.md](SOURCES.md).
 
-Three patterns use agents from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub) catalog. Their definitions are compiled and committed here, pinned to a hub commit, so install works from this checkout alone. See [HUB.md](HUB.md).
+The agent definitions come from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub) catalog, which is the source of truth. Every pattern except agent eval installs hub agents: their compiled YAML is committed here, pinned to a hub commit, so install works from this checkout alone. See [HUB.md](HUB.md). A pattern is a team plus an example task; the agents themselves are defined once, in the hub.
 
 ## Patterns
 
 | Pattern | Start agent | Use when | Output |
 | --- | --- | --- | --- |
-| [PDE team](#pde-team) | `pe-lead` | You have an idea, not a spec | `REQUIREMENTS.md`, `DESIGN.md`, `ENGINEERING.md` in a sandbox |
-| [Engineering manager](#engineering-manager) | `em-manager` | A change needs implementation plus verification | Verified change in a sandbox (no PR unless asked) |
-| [Incident commander](#incident-commander) | `ic-manager` | Something broke and you want to know where | Diagnosis and next step, no patch |
-| [Code review](#code-review) | `cr-manager` | A change exists and you want a gate | One merged Critical / Suggestions / Good practices review |
+| [PDE team](#pde-team) | `pde-lead` | You have an idea, not a spec | `REQUIREMENTS.md`, `DESIGN.md`, `ENGINEERING.md` in a sandbox |
+| [Engineering manager](#engineering-manager) | `engineering-manager` | A change needs implementation plus local and cluster verification | Verified change in a sandbox (no PR unless asked) |
+| [Incident commander](#incident-commander) | `incident-commander` | Something broke and you want to know where | Diagnosis and next step, no patch |
+| [Code review](#code-review) | `code-reviewer` | A change exists and you want a gate | One Critical / Suggestions / Good practices review |
 | [Agent eval](#agent-eval) | `eval-manager` | You want to compare prompts and models before assigning purposes | Ranked prompt × model matrix |
 | [Vendor contract review](#vendor-contract-review) | `legal-counsel` | You have a vendor agreement to triage | Merged GREEN/YELLOW/RED memo (draft for attorney review) |
 | [Secure delivery](#secure-delivery) | `engineering-manager` | A change needs implementation, QA, and a URL scan | Verified change; scan report |
 | [Backlog to reviewed change](#backlog-to-reviewed-change) | `product-manager` then `engineering-manager` then `code-reviewer` | Idea or ticket through delivery and a review gate | Spec, verified change, merged review |
 
-Typical order: PDE team → engineering manager → code review. Incident commander and agent eval stand alone. The last three come from the hub catalog.
+Typical order: PDE team → engineering manager → code review. Incident commander and agent eval stand alone. Engineering manager and secure delivery install the same four agents; they differ in the example task (cluster pass vs URL scan).
 
 ## Install
 
@@ -29,130 +29,122 @@ To install, start a **new session** in Crafting Agent UI with the default agent 
 
 ## PDE team
 
-A coordinator (`pe-lead`) that does **not** implement. It asks the user the hard product questions, then fans out to product, design, and engineering specialists. Those write `REQUIREMENTS.md`, `DESIGN.md`, and `ENGINEERING.md` in a sandbox. Implementation is a later `em-manager` session.
+A coordinator (`pde-lead`) that does **not** implement. It asks the user the hard product questions, locks the answers as numbered decisions, then fans out to `product-manager`, `design-lead`, and `engineering-manager`. Those write `REQUIREMENTS.md`, `DESIGN.md`, and `ENGINEERING.md` in a sandbox. Implementation is a later `engineering-manager` session on the same sandbox.
 
-Use this when the work is still “what are we building and how should it look,” not “implement this issue.” Product definition follows GSD discuss / new-project (locked D-nn decisions). Design follows Anthropic `frontend-design` and OpenAI `frontend-skill` (visual thesis first, no AI-slop defaults). Optional Slack pings go through [coworker-bot](https://github.com/crafting-demo/coworker-bot).
+Use this when the work is still “what are we building and how should it look,” not “implement this issue.” Product definition follows GSD discuss / new-project (locked D-nn decisions). Design follows Anthropic `frontend-design` and OpenAI `frontend-skill` (visual thesis first, no AI-slop defaults).
 
 ```mermaid
 sequenceDiagram
   participant User
-  participant Lead as pe-lead
-  participant PM as pe-pm
-  participant Design as pe-design
-  participant EM as pe-em
+  participant Lead as pde-lead
+  participant PM as product-manager
+  participant Design as design-lead
+  participant EM as engineering-manager
   User->>Lead: Product idea
   Lead->>User: Gray-area questions
   User->>Lead: Answers
   Lead->>PM: Write REQUIREMENTS.md
   Lead->>Design: Write DESIGN.md
-  Lead->>EM: Write ENGINEERING.md
+  Lead->>EM: Write ENGINEERING.md (define only)
   PM-->>Lead: Locked D-nn
   Design-->>Lead: Visual thesis
   EM-->>Lead: Stack and phases
-  Lead-->>User: Artifacts ready, next is em-manager
+  Lead-->>User: Artifacts ready, next is engineering-manager
 ```
 
 ```
 Set up the PDE team pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
 ```
 
-After install, start a **new** session, select agent `pe-lead`, and paste [patterns/pde-team/example-prompt.md](patterns/pde-team/example-prompt.md) — or your own product idea plus a template name from your org.
+After install, start a **new** session, select agent `pde-lead`, and paste [patterns/pde-team/example-prompt.md](patterns/pde-team/example-prompt.md) — or your own product idea plus a template name from your org.
 
 More detail: [patterns/pde-team/README.md](patterns/pde-team/README.md)
 
 ## Engineering manager
 
-A coordinator (`em-manager`) that does **not** write code. It plans, delegates, and checks work. Specialists (`em-coding`, `em-qa`, `em-integ`) each get a self-contained task in their own session, so the manager’s context stays small.
+A coordinator (`engineering-manager`) that does **not** write code. It plans, delegates, and checks work. Specialists (`software-engineer`, `qa-engineer`) each get a self-contained task in their own session, so the manager’s context stays small.
 
-Use this when a change needs implementation plus verification, and you want the coordinator to loop on evidence instead of accumulating a huge coding transcript.
+Use this when a change needs implementation plus verification, and you want the coordinator to loop on evidence instead of accumulating a huge coding transcript. This pattern's task verifies twice: a local pass, then a cluster pass through the template's Kubernetes intercept plan. Both are `qa-engineer`, as two separate requests, so a fresh session grades the cluster result.
 
 ```mermaid
 sequenceDiagram
   participant User
-  participant Manager as em-manager
-  participant Coding as em-coding
-  participant QA as em-qa
-  participant Integ as em-integ
+  participant Manager as engineering-manager
+  participant Dev as software-engineer
+  participant QA as qa-engineer
   User->>Manager: Issue plus template name
-  Manager->>Coding: Implement in sandbox
-  Coding-->>Manager: Sandbox id plus what changed
+  Manager->>Dev: Implement in sandbox
+  Dev-->>Manager: Sandbox id plus what changed
   Manager->>QA: Verify locally in that sandbox
   QA-->>Manager: Pass or fail evidence
   alt QA failed
-    Manager->>Coding: Original req plus QA evidence
+    Manager->>Dev: Original req plus QA evidence
   end
-  Manager->>Integ: Verify via intercept if plan exists
-  Integ-->>Manager: Pass or fail evidence
+  Manager->>QA: Verify via intercept if plan exists (new request)
+  QA-->>Manager: Pass, fail, or skipped
 ```
 
 ```
 Set up the engineering manager pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
 ```
 
-After install, start a **new** session, select agent `em-manager`, and paste [patterns/engineering-manager/example-prompt.md](patterns/engineering-manager/example-prompt.md) — or your own issue plus a template name from your org. The manager lists templates if you do not name one.
+After install, start a **new** session, select agent `engineering-manager`, and paste [patterns/engineering-manager/example-prompt.md](patterns/engineering-manager/example-prompt.md) — or your own issue plus a template name from your org. The manager lists templates if you do not name one.
 
 More detail: [patterns/engineering-manager/README.md](patterns/engineering-manager/README.md)
 
 ## Incident commander
 
-A coordinator (`ic-manager`) that does **not** patch. It plans, delegates reproduction, and optional cluster checks. Specialists (`ic-repro`, `ic-cluster`) each get a self-contained task in their own session. The output is a diagnosis and a recommended next step, not a pull request.
+A single diagnostician (`incident-commander`) that does **not** patch. It reproduces the symptom in a sandbox, optionally repeats the flow through the template's intercept plan to compare against the cluster, and writes a diagnosis with a recommended next step, not a pull request.
 
 Use this when the question is “what broke and where,” not “implement this issue.”
 
 ```mermaid
 sequenceDiagram
   participant User
-  participant Manager as ic-manager
-  participant Repro as ic-repro
-  participant Cluster as ic-cluster
-  User->>Manager: Symptom plus template name
-  Manager->>Repro: Reproduce in sandbox
-  Repro-->>Manager: Local evidence plus sandbox id
+  participant IC as incident-commander
+  participant WS as workspace
+  User->>IC: Symptom plus template name
+  IC->>WS: Reproduce in sandbox (read-only)
+  WS-->>IC: Local evidence plus sandbox id
   alt Template has intercept plan
-    Manager->>Cluster: Same flow via intercept
-    Cluster-->>Manager: Cluster evidence
+    IC->>WS: Same flow via intercept
+    WS-->>IC: Cluster evidence
   else No intercept plan
-    Manager-->>User: Skip cluster and say why
+    IC-->>User: Skip cluster and say why
   end
-  Manager-->>User: Diagnosis and recommended next step
+  IC-->>User: Diagnosis and recommended next step
 ```
 
 ```
 Set up the incident commander pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
 ```
 
-After install, start a **new** session, select agent `ic-manager`, and paste [patterns/incident-commander/example-prompt.md](patterns/incident-commander/example-prompt.md) — or your own symptom plus a template name from your org. The manager lists templates if you do not name one.
+After install, start a **new** session, select agent `incident-commander`, and paste [patterns/incident-commander/example-prompt.md](patterns/incident-commander/example-prompt.md) — or your own symptom plus a template name from your org. The agent lists templates if you do not name one.
 
 More detail: [patterns/incident-commander/README.md](patterns/incident-commander/README.md)
 
 ## Code review
 
-A coordinator (`cr-manager`) that does **not** patch. It fans the same diff out to quality, logic, and security specialists. Each specialist is instruction-enforced read-only (Crafting has no tool allowlist). The output is one review, not a PR.
+A single reviewer (`code-reviewer`) that does **not** patch. It reads the diff and covers quality, correctness, and defensive security in one pass, mapped to OWASP Top 10 and CWE. It is instruction-enforced read-only (Crafting has no tool allowlist). The output is one review, not a PR.
 
-Use this when a change already exists and you want a gate.
+Use this when a change already exists and you want a gate. Ask for a security-only review when you want that lens alone.
 
 ```mermaid
 sequenceDiagram
   participant User
-  participant Manager as cr-manager
-  participant Quality as cr-quality
-  participant Logic as cr-logic
-  participant Sec as cr-sec
-  User->>Manager: Sandbox plus diff to review
-  Manager->>Quality: Norms and quality (read-only)
-  Manager->>Logic: Correctness (read-only)
-  Manager->>Sec: Security (read-only)
-  Quality-->>Manager: Critical / Suggestions / Good
-  Logic-->>Manager: Critical / Suggestions / Good
-  Sec-->>Manager: Critical / Suggestions / Good
-  Manager-->>User: Merged review
+  participant CR as code-reviewer
+  participant WS as workspace
+  User->>CR: Sandbox plus diff to review
+  CR->>WS: Read diff, norms, tests (read-only)
+  WS-->>CR: Evidence
+  CR-->>User: Critical / Suggestions / Good practices
 ```
 
 ```
 Set up the code review pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
 ```
 
-After install, start a **new** session, select agent `cr-manager`, and paste [patterns/code-review/example-prompt.md](patterns/code-review/example-prompt.md) — or name a sandbox that already has the change.
+After install, start a **new** session, select agent `code-reviewer`, and paste [patterns/code-review/example-prompt.md](patterns/code-review/example-prompt.md) — or name a sandbox that already has the change.
 
 More detail: [patterns/code-review/README.md](patterns/code-review/README.md)
 

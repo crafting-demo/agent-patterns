@@ -13,6 +13,6 @@ Task:
 
 1. Reproduce locally in a sandbox from that template. Start services with `cs up` / `cs ps`. Hit `POST /api/cart/total` with a small cart body if the app has that path. If it does not, say so and hit the closest health or API endpoint you can find — that is still evidence.
 2. If the template has a Kubernetes intercept plan, repeat the same request through intercept and compare. If it does not, skip cluster and say why.
-3. Write a diagnosis: what reproduced, where (local, intercept, both, neither), what you ruled out, sandbox name, and a recommended next step. If a product fix is indicated, say that a delivery coordinator such as `em-manager` could take this sandbox and the diagnosis. Do not implement the fix.
+3. Write a diagnosis: what reproduced, where (local, intercept, both, neither), what you ruled out, sandbox name, and a recommended next step. If a product fix is indicated, say that `engineering-manager` could take this sandbox and the diagnosis. Do not implement the fix.
 
 Work is done when that diagnosis is written. The sandbox stays up.
