@@ -1,0 +1,7 @@
+Review this vendor agreement. We are the **customer**. Deadline is end of quarter. Focus on limitation of liability, indemnification, IP, data protection / DPA, and termination.
+
+Use the playbook at `patterns/vendor-contract-review/fixtures/PLAYBOOK.md` and the contract at `patterns/vendor-contract-review/fixtures/sample-msa.md`. If this session's sandbox already has those files at `~/vendor-contract-review/fixtures/`, use those paths instead.
+
+Fan out to `contract-analyst` and `compliance-reviewer` on the same documents. Merge one memo with GREEN / YELLOW / RED flags, redline language for YELLOW and RED, compliance gaps, and an escalation list.
+
+Do not give legal advice. Label the memo as a draft for attorney review. Do not email, sign, or edit the source contract.

@@ -6,6 +6,8 @@ These examples are not tied to a particular product, template, or site. After in
 
 Roles and isolation follow published designs from Anthropic, Google, GitHub, OpenAI, and OWASP. See [SOURCES.md](SOURCES.md).
 
+Hub-backed demos compile agents from the private catalog [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub). See [HUB.md](HUB.md).
+
 ## Patterns
 
 | Pattern | Start agent | Use when | Output |
@@ -15,8 +17,11 @@ Roles and isolation follow published designs from Anthropic, Google, GitHub, Ope
 | [Incident commander](#incident-commander) | `ic-manager` | Something broke and you want to know where | Diagnosis and next step, no patch |
 | [Code review](#code-review) | `cr-manager` | A change exists and you want a gate | One merged Critical / Suggestions / Good practices review |
 | [Agent eval](#agent-eval) | `eval-manager` | You want to compare prompts and models before assigning purposes | Ranked prompt × model matrix |
+| [Vendor contract review](#vendor-contract-review) | `legal-counsel` | You have a vendor agreement to triage | Merged GREEN/YELLOW/RED memo (draft for attorney review) |
+| [Secure delivery](#secure-delivery) | `engineering-manager` | A change needs implementation, QA, and a URL scan | Verified change; scan report |
+| [Backlog to reviewed change](#backlog-to-reviewed-change) | `product-manager` then `engineering-manager` then `code-reviewer` | Idea or ticket through delivery and a review gate | Spec, verified change, merged review |
 
-Typical order: PDE team → engineering manager → code review. Incident commander and agent eval stand alone.
+Typical order: PDE team → engineering manager → code review. Incident commander and agent eval stand alone. Hub demos: vendor contract review (legal), secure delivery, backlog to reviewed change.
 
 ## Install
 
@@ -186,3 +191,53 @@ After install, start a **new** session, select agent `eval-manager`, and paste [
 A ranking is valid only if **both** slots produced implementation artifacts. Provider 5xx / RPC errors are incomplete trials: `eval-manager` retries, then rebinds the dead slot to another catalog model and re-runs those cells.
 
 More detail: [patterns/agent-eval/README.md](patterns/agent-eval/README.md)
+
+## Vendor contract review
+
+A coordinator (`legal-counsel`) that does **not** give legal advice. It fans the same vendor agreement to `contract-analyst` and `compliance-reviewer`. Output is one GREEN / YELLOW / RED memo, labeled as a draft for attorney review. Personas compile from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub) (Anthropic knowledge-work legal plugin, paraphrased).
+
+Use this when the work is “what is wrong with this vendor paper,” not “implement this issue.”
+
+```mermaid
+sequenceDiagram
+  participant User
+  participant Counsel as legal-counsel
+  participant Contracts as contract-analyst
+  participant Compliance as compliance-reviewer
+  User->>Counsel: Vendor MSA plus playbook
+  Counsel->>Contracts: Clause review
+  Counsel->>Compliance: DPA / privacy terms
+  Counsel-->>User: Merged memo
+```
+
+```
+Set up the vendor contract review pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
+After install, start a **new** session, select `legal-counsel`, and paste [patterns/vendor-contract-review/example-prompt.md](patterns/vendor-contract-review/example-prompt.md).
+
+More detail: [patterns/vendor-contract-review/README.md](patterns/vendor-contract-review/README.md)
+
+## Secure delivery
+
+`engineering-manager` implements via `software-engineer`, verifies with `qa-engineer`, then scans reported URLs with `security-scanner` (CLI planted like the demo-org webscan agent). Hub packages; no exploits.
+
+```
+Set up the secure delivery pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
+After install, start a **new** session, select `engineering-manager`, and paste [patterns/secure-delivery/example-prompt.md](patterns/secure-delivery/example-prompt.md).
+
+More detail: [patterns/secure-delivery/README.md](patterns/secure-delivery/README.md)
+
+## Backlog to reviewed change
+
+Three sessions: `product-manager` (Jira or Linear at install, or a pasted backlog) writes a spec, `engineering-manager` delivers it, `code-reviewer` gates the diff. Hub packages.
+
+```
+Set up the backlog to reviewed change pattern from https://github.com/crafting-demo/agent-patterns. Create a sandbox from that repo if needed (or git pull if it already exists), open a workspace, follow INSTALL.md without asking for confirmation, and finish by printing the example prompt.
+```
+
+After install, run the three sessions in [patterns/backlog-to-change/example-prompt.md](patterns/backlog-to-change/example-prompt.md).
+
+More detail: [patterns/backlog-to-change/README.md](patterns/backlog-to-change/README.md)
