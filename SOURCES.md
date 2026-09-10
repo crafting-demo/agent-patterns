@@ -51,3 +51,11 @@ We do not copy those SKILL.md files into this repo. `pe-design` paraphrases the 
 - Isolated trial sessions = Anthropic subagent isolation (each cell is a new context).
 - Independent repeats so one lucky run does not decide the ranking (eval hygiene, not a vendor plugin).
 
+## Hub-backed demos
+
+These patterns install agents that come from [crafting-demo/agent-hub](https://github.com/crafting-demo/agent-hub), compiled and committed here at a pinned commit (see [HUB.md](HUB.md)). Attribution lives in that repo's `SOURCES.md` and each agent's README.
+
+- **Vendor contract review** — Anthropic [knowledge-work-plugins legal](https://github.com/anthropics/knowledge-work-plugins/tree/main/legal) (23.9k) and [claude-for-legal](https://github.com/anthropics/claude-for-legal). Draft for attorney review; we do not vendor plugin files. Sample MSA is an original fixture, not a CUAD dump.
+- **Secure delivery** — same engineering split as above, plus Crafting webscan CLI-in-template (`security-scanner` / lonkero wrapper).
+- **Backlog to reviewed change** — Anthropic product-management plugin for the PM; Copilot review-code shape for the gate.
+

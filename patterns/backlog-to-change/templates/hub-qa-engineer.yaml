@@ -1,0 +1,29 @@
+# Compiled from the Crafting Agent Hub — sandbox template hub-qa-engineer. Do not edit this copy.
+# Package: agents/qa-engineer
+# Source:  https://github.com/crafting-demo/agent-hub/tree/192a08ff/agents/qa-engineer
+# Commit:  192a08ff01abc6cc3ca6db22816de3d63cf09f9d (2026-09-10)
+# Rebuild: python3 scripts/build.py qa-engineer   (see HUB.md)
+# Create this as template `hub-qa-engineer`; the agent references it by that name.
+
+workspaces:
+- name: agent
+  system:
+    files:
+    - path: ~/.agents/skills/local-qa/SKILL.md
+      mode: '0644'
+      content: |
+        ---
+        name: local-qa
+        description: Verify a change against locally running sandbox services. Use Playwright for web UI flows. Report pass or fail. Do not patch.
+        ---
+
+        # Local QA
+
+        1. Join the existing sandbox. Do not create a new one.
+        2. `cs ps`; `cs up` / `cs down` for template daemons only.
+        3. Drive the user flow. Web UI: Playwright. API: real HTTP against local
+           ports or sandbox endpoints.
+        4. Assert at each visible step.
+        5. Report pass/fail, commands, observations, concrete failures.
+
+        No product edits. No PR.

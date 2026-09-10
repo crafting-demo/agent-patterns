@@ -45,7 +45,10 @@ Read the user message.
 - If they asked for the **incident commander** pattern, continue at `patterns/incident-commander/INSTALL.md`.
 - If they asked for the **code review** pattern, continue at `patterns/code-review/INSTALL.md`.
 - If they asked for the **agent eval** pattern, continue at `patterns/agent-eval/INSTALL.md`.
-- If they asked for more than one, do PDE team first, then engineering manager, then incident commander, then code review, then agent eval.
+- If they asked for the **vendor contract review** pattern, continue at `patterns/vendor-contract-review/INSTALL.md`.
+- If they asked for the **secure delivery** pattern, continue at `patterns/secure-delivery/INSTALL.md`.
+- If they asked for the **backlog to reviewed change** pattern, continue at `patterns/backlog-to-change/INSTALL.md`.
+- If they asked for more than one, do PDE team first, then engineering manager, then incident commander, then code review, then agent eval, then vendor contract review, then secure delivery, then backlog to reviewed change.
 
 ## 4. When you are done
 

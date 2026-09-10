@@ -1,0 +1,26 @@
+# Compiled from the Crafting Agent Hub — sandbox template hub-contract-analyst. Do not edit this copy.
+# Package: agents/contract-analyst
+# Source:  https://github.com/crafting-demo/agent-hub/tree/192a08ff/agents/contract-analyst
+# Commit:  192a08ff01abc6cc3ca6db22816de3d63cf09f9d (2026-09-10)
+# Rebuild: python3 scripts/build.py contract-analyst   (see HUB.md)
+# Create this as template `hub-contract-analyst`; the agent references it by that name.
+
+workspaces:
+- name: agent
+  system:
+    files:
+    - path: ~/.agents/skills/contract-review/SKILL.md
+      mode: '0644'
+      content: |
+        ---
+        name: contract-review
+        description: Clause-by-clause contract review against a negotiation playbook with GREEN/YELLOW/RED flags and redline suggestions. Use when reviewing vendor or customer agreements. Not legal advice.
+        ---
+
+        # Contract review
+
+        1. Accept file, path, URL, or paste.
+        2. Confirm side, deadline, focus areas.
+        3. Load playbook or declare you lack one.
+        4. Clause-by-clause flags + redlines for YELLOW/RED.
+        5. Overall flag, escalations, not-reviewed, attorney-review disclaimer.
