@@ -4,16 +4,12 @@ Do this after the repository root `INSTALL.md`.
 
 These agents are compiled from the Crafting Agent Hub and committed to this repo ([HUB.md](../../HUB.md)). Everything you need is in this checkout; do not clone or build the hub.
 
-Create the templates **before** the agents that use them, and the specialists **before** the coordinators. `pde-lead` delegates to `engineering-manager`, and `engineering-manager` in turn names three specialists of its own, so all seven agents are created here.
+Create the template **before** the agent that uses it, and the specialists **before** the coordinators. `pde-lead` delegates to `engineering-manager`, and `engineering-manager` in turn names three specialists of its own, so all seven agents are created here. Only `security-scanner` needs a template.
 
 From the repository root:
 
 ```sh
-cs template create hub-software-engineer patterns/pde-team/templates/hub-software-engineer.yaml
-cs template create hub-qa-engineer patterns/pde-team/templates/hub-qa-engineer.yaml
 cs template create hub-security-scanner patterns/pde-team/templates/hub-security-scanner.yaml
-cs template create hub-product-manager patterns/pde-team/templates/hub-product-manager.yaml
-cs template create hub-design-lead patterns/pde-team/templates/hub-design-lead.yaml
 
 cs llm agent create software-engineer --shared patterns/pde-team/agents/software-engineer.yaml
 cs llm agent create qa-engineer --shared patterns/pde-team/agents/qa-engineer.yaml

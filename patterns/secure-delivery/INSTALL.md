@@ -4,13 +4,11 @@ Do this after the repository root `INSTALL.md`.
 
 These agents are compiled from the Crafting Agent Hub and committed to this repo ([HUB.md](../../HUB.md)). Everything you need is in this checkout — do not clone or build the hub.
 
-Create the templates **before** the agents that use them, and the specialists **before** the manager.
+Create the template **before** the agent that uses it, and the specialists **before** the manager. Only `security-scanner` needs one.
 
 From the repository root:
 
 ```sh
-cs template create hub-software-engineer patterns/secure-delivery/templates/hub-software-engineer.yaml
-cs template create hub-qa-engineer patterns/secure-delivery/templates/hub-qa-engineer.yaml
 cs template create hub-security-scanner patterns/secure-delivery/templates/hub-security-scanner.yaml
 
 cs llm agent create software-engineer --shared patterns/secure-delivery/agents/software-engineer.yaml
@@ -31,6 +29,6 @@ cs llm agent show engineering-manager --shared
 cs template show hub-security-scanner
 ```
 
-You should see `engineering-manager` with sub-agents `software-engineer`, `qa-engineer`, and `security-scanner`. The scanner's template plants the lonkero CLI in its sandbox.
+You should see `engineering-manager` with sub-agents `software-engineer`, `qa-engineer`, and `security-scanner`. The scanner's template plants the lonkero CLI in its sandbox, alongside a `target` workspace running OWASP Juice Shop. This pattern's task names the app the engineer built, so that bundled target goes unused here.
 
 Then tell the user to start a **new** session, select agent `engineering-manager`, and paste the contents of `patterns/secure-delivery/example-prompt.md`.

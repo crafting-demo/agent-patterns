@@ -1,7 +1,7 @@
 # Compiled from the Crafting Agent Hub — agent. Do not edit this copy.
 # Package: agents/incident-commander
-# Source:  https://github.com/crafting-demo/agent-hub/tree/b9ba5702/agents/incident-commander
-# Commit:  b9ba5702addf7bc6277d1d0575e6cbafa73202e7 (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/407e0096/agents/incident-commander
+# Commit:  407e00960213fb9ccc5c9013c82c4e067198e7e7 (2026-09-15)
 # Rebuild: python3 scripts/build.py incident-commander   (see HUB.md)
 
 brief: Diagnose an incident without changing code
@@ -41,6 +41,19 @@ instructions: |-
 
   Give the workspace agent a self-contained, read-only request. Do not start
   services with language toolchains.
-exec:
-  use_template:
-    name: hub-incident-commander
+
+  ## Skills
+
+  Each skill below is a procedure. When a request matches a skill's
+  description, follow that skill. These are part of your instructions;
+  do not look for skill files on disk.
+
+  ### Diagnose an incident (`diagnose-incident`)
+
+  Reproduce a symptom in a sandbox and optionally compare via Kubernetes intercept. Report diagnosis. Do not patch.
+
+  1. Restate the symptom. Name the template.
+  2. Reproduce locally (`cs up` / `cs ps`, named flow, evidence).
+  3. Intercept only if a plan exists.
+  4. Write diagnosis: reproduced?, where?, ruled out, sandbox, next step.
+  5. No product edits. No implementer spawn.

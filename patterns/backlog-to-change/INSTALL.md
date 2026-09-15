@@ -4,16 +4,12 @@ Do this after the repository root `INSTALL.md`.
 
 These agents are compiled from the Crafting Agent Hub and committed to this repo ([HUB.md](../../HUB.md)). Everything you need is in this checkout — do not clone or build the hub.
 
-Create the templates **before** the agents that use them, and the specialists **before** the manager.
+Create the template **before** the agent that uses it, and the specialists **before** the manager. Only `security-scanner` needs one.
 
 From the repository root:
 
 ```sh
-cs template create hub-product-manager patterns/backlog-to-change/templates/hub-product-manager.yaml
-cs template create hub-software-engineer patterns/backlog-to-change/templates/hub-software-engineer.yaml
-cs template create hub-qa-engineer patterns/backlog-to-change/templates/hub-qa-engineer.yaml
 cs template create hub-security-scanner patterns/backlog-to-change/templates/hub-security-scanner.yaml
-cs template create hub-code-reviewer patterns/backlog-to-change/templates/hub-code-reviewer.yaml
 
 cs llm agent create software-engineer --shared patterns/backlog-to-change/agents/software-engineer.yaml
 cs llm agent create qa-engineer --shared patterns/backlog-to-change/agents/qa-engineer.yaml

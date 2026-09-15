@@ -1,7 +1,7 @@
 # Compiled from the Crafting Agent Hub — sandbox template hub-contract-analyst. Do not edit this copy.
 # Package: agents/contract-analyst
-# Source:  https://github.com/crafting-demo/agent-hub/tree/b9ba5702/agents/contract-analyst
-# Commit:  b9ba5702addf7bc6277d1d0575e6cbafa73202e7 (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/407e0096/agents/contract-analyst
+# Commit:  407e00960213fb9ccc5c9013c82c4e067198e7e7 (2026-09-15)
 # Rebuild: python3 scripts/build.py contract-analyst   (see HUB.md)
 # Create this as template `hub-contract-analyst`; the agent references it by that name.
 
@@ -22,23 +22,6 @@ workspaces:
                 }
   system:
     files:
-    - path: ~/.agents/skills/contract-review/SKILL.md
-      mode: '0644'
-      content: |
-        ---
-        name: contract-review
-        description: Clause-by-clause contract review against a negotiation playbook with GREEN/YELLOW/RED flags and redline suggestions. Use when reviewing vendor or customer agreements. Not legal advice.
-        ---
-
-        # Contract review
-
-        1. Accept file, path, URL, or paste.
-        2. If it is `.docx`/`.odt`/`.rtf`, convert with `~/legal/doc2md.sh FILE` and review the Markdown. Legacy `.doc` and PDF: ask for a `.docx` export.
-        3. Confirm side, deadline, focus areas.
-        4. Load playbook or declare you lack one.
-        5. Clause-by-clause flags + redlines for YELLOW/RED, citing the original section numbers.
-        6. Overall flag, escalations, not-reviewed, attorney-review disclaimer.
-        7. If a redlines document is requested, write Markdown and deliver with `~/legal/md2docx.sh redlines.md redlines.docx`.
     - path: ~/legal/doc2md.sh
       mode: '0755'
       content: |

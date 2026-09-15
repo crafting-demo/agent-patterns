@@ -1,7 +1,7 @@
 # Compiled from the Crafting Agent Hub — sandbox template hub-compliance-reviewer. Do not edit this copy.
 # Package: agents/compliance-reviewer
-# Source:  https://github.com/crafting-demo/agent-hub/tree/b9ba5702/agents/compliance-reviewer
-# Commit:  b9ba5702addf7bc6277d1d0575e6cbafa73202e7 (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/407e0096/agents/compliance-reviewer
+# Commit:  407e00960213fb9ccc5c9013c82c4e067198e7e7 (2026-09-15)
 # Rebuild: python3 scripts/build.py compliance-reviewer   (see HUB.md)
 # Create this as template `hub-compliance-reviewer`; the agent references it by that name.
 
@@ -22,23 +22,6 @@ workspaces:
                 }
   system:
     files:
-    - path: ~/.agents/skills/compliance-check/SKILL.md
-      mode: '0644'
-      content: |
-        ---
-        name: compliance-check
-        description: Privacy and compliance review of a contract, feature, or initiative (GDPR, CCPA, DPA terms). Use when launching something that touches personal data or when a vendor agreement needs a DPA pass. Not legal advice.
-        ---
-
-        # Compliance check
-
-        1. Name the initiative or document.
-        2. If the document is `.docx`/`.odt`/`.rtf`, convert with `~/legal/doc2md.sh FILE` and read the Markdown. Legacy `.doc` and PDF: ask for a `.docx` export.
-        3. List applicable regimes you actually have reason to apply (do not dump every regulation).
-        4. Table of requirements vs status, citing the original section numbers.
-        5. Approvals and further review.
-        6. Mark training-knowledge citations as unverified.
-        7. Disclaimer: draft for attorney review. Deliver as `.docx` with `~/legal/md2docx.sh` if asked for a file.
     - path: ~/legal/doc2md.sh
       mode: '0755'
       content: |
