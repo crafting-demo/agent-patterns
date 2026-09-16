@@ -2,7 +2,7 @@
 
 A single diagnostician (`incident-commander`) that does **not** patch. It reproduces a symptom in a sandbox, optionally repeats the same flow through the template's Kubernetes intercept plan to compare against the cluster, and writes a diagnosis with a recommended next step. The output is evidence, not a pull request.
 
-The agent comes from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub); its compiled definition lives in `agents/` and `templates/` here, pinned to a hub commit ([HUB.md](../../HUB.md)).
+The agent comes from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub); its compiled definition lives in `agents/` here, pinned to a hub commit ([HUB.md](../../HUB.md)).
 
 Use this when the question is "what broke and where," not "implement this issue." If a product fix is indicated, hand the sandbox and the diagnosis to `engineering-manager`.
 
@@ -41,5 +41,4 @@ The agent lists templates if you do not name one. It does not assume a particula
 
 ```sh
 cs llm agent remove incident-commander --shared
-cs template remove hub-incident-commander
 ```

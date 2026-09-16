@@ -1,7 +1,7 @@
 # Compiled from the Crafting Agent Hub — sandbox template hub-security-scanner. Do not edit this copy.
 # Package: agents/security-scanner
-# Source:  https://github.com/crafting-demo/agent-hub/tree/b9ba5702/agents/security-scanner
-# Commit:  b9ba5702addf7bc6277d1d0575e6cbafa73202e7 (2026-09-10)
+# Source:  https://github.com/crafting-demo/agent-hub/tree/407e0096/agents/security-scanner
+# Commit:  407e00960213fb9ccc5c9013c82c4e067198e7e7 (2026-09-15)
 # Rebuild: python3 scripts/build.py security-scanner   (see HUB.md)
 # Create this as template `hub-security-scanner`; the agent references it by that name.
 
@@ -20,38 +20,6 @@ workspaces:
                 }
   system:
     files:
-    - path: ~/.agents/skills/web-scan/SKILL.md
-      mode: '0644'
-      content: |
-        ---
-        name: web-scan
-        description: Run the planted scan.sh CLI against a URL, parse JSON findings, and report them by severity. Use when asked to scan, re-scan, or verify that a vulnerability was fixed. Never write exploits.
-        ---
-
-        # Web scan
-
-        ## Command
-
-        ```
-        /home/owner/scan/scan.sh [flags] URL
-        ```
-
-        `scan.sh` is planted by the hub exec template. It requests a sandbox endpoint
-        cookie and execs lonkero.
-
-        ## Steps
-
-        1. Confirm the URL (and any mode flags) from the request.
-        2. Run the command. Capture the full JSON.
-        3. Summarize findings. Map to OWASP Top 10 / CWE labels when the mapping is
-           obvious; otherwise describe the observation without stretching.
-        4. On re-scan, diff against the previous finding list in this conversation.
-
-        ## Do not
-
-        - Write or suggest exploit payloads
-        - Change application code
-        - Skip the CLI and guess from the URL string
     - path: ~/scan/scan.sh
       mode: '0755'
       content: |
@@ -62,3 +30,64 @@ workspaces:
       mode: '0644'
       content: |
         Use `./scan.sh URL` to scan the specified URL and report vulnerabilities.
+- name: target
+  description: OWASP Juice Shop, the deliberately vulnerable app under test.
+  ports:
+  - name: http
+    port: 3000
+    protocol: HTTP/TCP
+  env:
+  - PATH=/usr/local/node/bin:$PATH
+  checkouts:
+  - path: target
+    manifest:
+      overlays:
+      - inline:
+          hooks:
+            post-checkout:
+              cmd: |
+                case "$(uname -m)" in
+                  x86_64) arch=x64 ;;
+                  aarch64) arch=arm64 ;;
+                  *) echo "unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+                esac
+
+                # The packaged release pins engines.node to 22, so the
+                # distro nodejs package is not new enough.
+                [[ -d /usr/local/node ]] || {
+                  sudo rm -fr /tmp/node
+                  sudo mkdir -p /tmp/node
+                  curl -sSfL "https://nodejs.org/dist/v22.23.2/node-v22.23.2-linux-${arch}.tar.xz" \
+                    | sudo tar -C /tmp/node -xJ --strip-components=1
+                  sudo mv /tmp/node /usr/local/
+                }
+
+                # Prebuilt release: ships node_modules and a compiled
+                # frontend, so there is no npm install or build step.
+                [[ -f build/app.js ]] || {
+                  curl -sSfL "https://github.com/juice-shop/juice-shop/releases/download/v20.2.0/juice-shop-20.2.0_node22_linux_${arch}.tgz" \
+                    | tar -zx --strip-components=1
+                }
+          daemons:
+            juice-shop:
+              run:
+                cmd: node build/app.js
+                env:
+                - PORT=3000
+  probes:
+    readiness:
+    - name: http
+      http_get:
+        port: 3000
+        path: /rest/admin/application-version
+      interval: 10s
+      initial_delay: 20s
+      initial_negative_threshold: 30
+endpoints:
+- name: target
+  http:
+    routes:
+    - backend:
+        target: target
+        port: http
+      path_prefix: /

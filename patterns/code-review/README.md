@@ -2,7 +2,7 @@
 
 A single reviewer (`code-reviewer`) that does **not** patch. It reads the diff in an existing sandbox and covers three lenses in one pass: quality, correctness, and defensive security (mapped to OWASP Top 10 and CWE). The output is one review (Critical / Suggestions / Good practices), not a pull request.
 
-The agent comes from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub); its compiled definition lives in `agents/` and `templates/` here, pinned to a hub commit ([HUB.md](../../HUB.md)). The three lenses follow the specialist split in Anthropic's pr-review-toolkit; the hub collapses them into one agent because they take the same input and produce the same report.
+The agent comes from the [Crafting Agent Hub](https://github.com/crafting-demo/agent-hub); its compiled definition lives in `agents/` here, pinned to a hub commit ([HUB.md](../../HUB.md)). The three lenses follow the specialist split in Anthropic's pr-review-toolkit; the hub collapses them into one agent because they take the same input and produce the same report.
 
 Crafting `LLMAgent` has no read-only tool allowlist (unlike Anthropic's `Read`/`Grep`/`Glob`). The agent still joins a workspace so it can read the diff; instructions forbid writes, and it restates that contract on every workspace transfer.
 
@@ -37,7 +37,6 @@ If the repo under review has a `NORMS.md`, `CONTRIBUTING.md`, `AGENTS.md`, `CLAU
 
 ```sh
 cs llm agent remove code-reviewer --shared
-cs template remove hub-code-reviewer
 ```
 
 `code-reviewer` is shared with `backlog-to-change`; remove it only if that pattern is not installed.
